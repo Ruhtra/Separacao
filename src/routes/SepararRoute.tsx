@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { GetListItemDtoRequest, useGetListItem } from "@/services/Querys/Items";
 import {
   GetSeparacaoDtoRequest,
   useGetSeparacao,
@@ -20,11 +21,20 @@ export function SepararRoute() {
   const request: GetSeparacaoDtoRequest = {
     numpedido: searchParams.get("numpedido") || "",
   };
+  const requestitem: GetListItemDtoRequest = {
+    numpedido: searchParams.get("numpedido") || "",
+  };
   const { data, isLoading, refetch } = useGetSeparacao(request);
+  const {
+    data: itens,
+    isLoading: isLoadingItens,
+    refetch: refetchItens,
+  } = useGetListItem(requestitem);
   const handleSearchClick = async () => {
     await refetch();
+    await refetchItens();
   };
-  if (isLoading) return <h1>Carregando separação</h1>;
+  if (isLoading || isLoadingItens) return <h1>Carregando separação</h1>;
 
   return (
     <>
@@ -51,7 +61,22 @@ export function SepararRoute() {
           </Card>
         </div>
       )}
-      {}
+      {itens && (
+        <div>
+          <Card>
+            <CardContent className="p-4">
+              {itens.map((i, indice) => {
+                return (
+                  <div key={indice}>
+                    <div>desc: {i.descricao_item}</div>
+                    <br />
+                  </div>
+                );
+              })}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </>
   );
 }

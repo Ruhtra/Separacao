@@ -6,20 +6,21 @@ const PathUrl = `/Separacao`;
 export type GetSeparacaoDtoRequest = {
   numpedido?: string;
 };
+
 export type GetSeparacaoDtoResponse = {
   numpedido: number;
   cliente?: string;
-  DATA_INICIO_SEPARACAO?: Date;
-  IDOPERADOR?: number;
-  SITUACAO_SEPARACAO?: string;
-  DATA_FIM_SEPARACAO?: Date;
-  QTD_PRODUTOS?: number;
-  QTD_ITENS?: number;
+  data_inicio_separacao?: Date;
+  idoperador?: number;
+  situacao_separacao?: string;
+  data_fim_separacao?: Date;
+  qtd_produtos?: number;
+  qtd_itens?: number;
 };
 
 export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
   const query = useQuery<GetSeparacaoDtoResponse>({
-    queryKey: ["Separacao", request],
+    queryKey: ["separacao", request],
     queryFn: async () => {
       const response = await api.get<GetSeparacaoDtoResponse>(
         `${PathUrl}/GetSeparacao`,
