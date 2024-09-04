@@ -1,4 +1,4 @@
-import { columns, Item } from "@/components/myUi/TableItens/Column";
+import { columns } from "@/components/myUi/TableItens/Column";
 import { DataTable } from "@/components/myUi/TableItens/DataTabel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -38,15 +38,7 @@ export function SepararRoute() {
   };
   if (isLoading || isLoadingItens) return <h1>Carregando separação</h1>;
 
-  const dataa: Item[] = [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    // ...
-  ];
+  console.log(itens);
 
   return (
     <>
@@ -77,7 +69,19 @@ export function SepararRoute() {
         <div>
           <Card>
             <CardContent className="p-4">
-              <DataTable columns={columns} data={dataa} />
+              <DataTable
+                columns={columns}
+                data={itens?.map((item) => {
+                  return {
+                    codproduto: item.codproduto.toString(),
+                    qtd: item.qtd,
+                    embalagem: item.embalagem,
+                    qtd_separada: item.qtd_separada,
+                    descricao_item: item.descricao_item,
+                    situacao_separacao_item: item.situacao_separacao_item,
+                  };
+                })}
+              />
             </CardContent>
           </Card>
         </div>
