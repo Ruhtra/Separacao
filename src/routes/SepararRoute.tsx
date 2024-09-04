@@ -38,13 +38,11 @@ export function SepararRoute() {
   };
   if (isLoading || isLoadingItens) return <h1>Carregando separação</h1>;
 
-  console.log(itens);
-
   return (
-    <>
+    <div className="grid grid-rows-[auto_auto_80%] h-full p-4">
       <div>
-        <Card className="bg-red-500">
-          <CardContent className="flex p-4 gap-2">
+        <Card className="">
+          <CardContent className="flex p-4 gap-2 justify-center items-center">
             <label htmlFor="numpedido">Numpedido</label>
             <Input
               type="text"
@@ -66,9 +64,9 @@ export function SepararRoute() {
         </div>
       )}
       {itens && (
-        <div>
-          <Card>
-            <CardContent className="p-4">
+        <div className="h-full">
+          <Card className="h-full">
+            <CardContent className="h-full p-4">
               <DataTable
                 columns={columns}
                 data={itens?.map((item) => {
@@ -86,6 +84,6 @@ export function SepararRoute() {
           </Card>
         </div>
       )}
-    </>
+    </div>
   );
 }
