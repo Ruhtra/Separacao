@@ -1,14 +1,14 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { api } from "../Api";
 import { toast } from "sonner";
 const PathUrl = `/Separacao`;
 
 export type GetSeparacaoDtoRequest = {
-  NUMPEDIDO?: string;
+  numpedido?: string;
 };
 export type GetSeparacaoDtoResponse = {
-  NUMPEDIDO: number;
-  CLIENTE?: string;
+  numpedido: number;
+  cliente?: string;
   DATA_INICIO_SEPARACAO?: Date;
   IDOPERADOR?: number;
   SITUACAO_SEPARACAO?: string;
@@ -18,7 +18,7 @@ export type GetSeparacaoDtoResponse = {
 };
 
 export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
-  return useQuery<GetSeparacaoDtoResponse>({
+  const query = useQuery<GetSeparacaoDtoResponse>({
     queryKey: ["Separacao", request],
     queryFn: async () => {
       const response = await api.get<GetSeparacaoDtoResponse>(
@@ -32,9 +32,18 @@ export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
     staleTime: 1000 * 60, // 1 minute
     enabled: false,
     retry: false,
-    onError: (err: any) => {
-      if (err.status == 404) return toast("Pedido não encontrado");
-      toast("Erro desconhecido, contate o suporte!");
-    },
   });
+
+  if (query.error) {
+    const error = query.error as any;
+    const statusCode = error?.response?.status;
+
+    if (statusCode === 404) {
+      toast.error("Pedido não encontrado!");
+    } else {
+      toast.error("Erro desconhecido, contate o suporte!");
+    }
+  }
+
+  return query;
 }

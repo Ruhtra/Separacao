@@ -6,12 +6,10 @@ import {
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
 import { useSearchParams } from "react-router-dom";
-import { toast } from "sonner";
 
 export function SepararRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
   const idOperador = searchParams.get("idOperador");
-
   if (!idOperador) return <h1>IdOperador não encontrado</h1>;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,15 +18,13 @@ export function SepararRoute() {
   };
 
   const request: GetSeparacaoDtoRequest = {
-    NUMPEDIDO: searchParams.get("numpedido") || "",
+    numpedido: searchParams.get("numpedido") || "",
   };
-  const { data, status, refetch } = useGetSeparacao(request);
-
+  const { data, isLoading, refetch } = useGetSeparacao(request);
   const handleSearchClick = async () => {
     await refetch();
   };
-
-  if (status == "loading") return <h1>Carregando separação</h1>;
+  if (isLoading) return <h1>Carregando separação</h1>;
 
   return (
     <>
@@ -45,7 +41,17 @@ export function SepararRoute() {
           </CardContent>
         </Card>
       </div>
-      {!data ? <h2>Vazio</h2> : <div>{JSON.stringify(data)}</div>}
+      {data && (
+        <div>
+          <Card>
+            <CardContent className="p-4">
+              Numpedido: {data.numpedido} <br />
+              CLiente: {data.cliente}
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      {}
     </>
   );
 }
