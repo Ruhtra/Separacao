@@ -1,8 +1,10 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { GetListItemDtoResponse } from "@/services/Querys/Items";
+import { BadgeIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 export interface TablePProps {
@@ -61,10 +63,18 @@ export function TableP({ itens }: TablePProps) {
               </div>
               <div>{i.codproduto}</div>
               <div>{i.embalagem}</div>
-              <div className="flex col-span-2 gap-2">
-                <Input className="w-14" />
-                <Button className="pl-0 pr-0 w-full">Sep</Button>
-                <Button className="pl-0 pr-0 w-full">Conf</Button>
+              <div className="flex col-span-2 gap-2 relative">
+                {i.situacao_separacao_item == null ? (
+                  <>
+                    <Input className="w-14" />
+                    <Button className="pl-0 pr-0 w-full">Parc.</Button>
+                    <Button className="pl-0 pr-0 w-full">Comp.</Button>
+                  </>
+                ) : (
+                  <Badge className=" absolute bg-green-400 right-0 text-2xs hover:bg-green-400">
+                    Separado
+                  </Badge>
+                )}
               </div>
             </div>
           ))}
