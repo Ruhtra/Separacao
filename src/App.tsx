@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { IndexRoute } from "./routes/IndexRoute";
-import { SepararRoute } from "./routes/SepararRoute";
+import { SepararRoute } from "./routes/SepararRoute/SepararRoute";
 import { Toaster } from "./components/ui/sonner";
 import { SelectForm } from "./components/myUi/teste";
 

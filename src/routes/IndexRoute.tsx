@@ -22,7 +22,6 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useGetListOperador } from "@/services/Querys/Operador";
 
-// Schema de validação
 const FormSchema = z.object({
   id: z
     .string({
@@ -34,12 +33,10 @@ const FormSchema = z.object({
 export function IndexRoute() {
   const navigate = useNavigate();
 
-  // Inicializando o formulário
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  // Função de redirecionamento
   function onSubmit(path: string) {
     return (data: z.infer<typeof FormSchema>) => {
       navigate(`${path}?idoperador=${data.id}`);

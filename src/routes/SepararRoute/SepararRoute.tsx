@@ -8,6 +8,7 @@ import {
   GetSeparacaoDtoRequest,
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function SepararRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,7 +36,6 @@ export function SepararRoute() {
     await refetch();
     await refetchItens();
   };
-  if (isLoading || isLoadingItens) return <h1>Carregando separação</h1>;
 
   return (
     <div className="grid grid-rows-[5em_6em_calc(100%-11em)] bg-yellow-200 h-full p-4">
@@ -52,24 +52,46 @@ export function SepararRoute() {
           </CardContent>
         </Card>
       </div>
-      {data && (
-        <div>
-          <Card>
+      {isLoading || isLoadingItens ? (
+        <Skeleton className="bg-gray-500 h-fit">
+          <Card className="opacity-0">
             <CardContent className="p-4">
-              Numpedido: {data.numpedido} <br />
-              CLiente: {data.cliente}
+              Numpedido: <br />
+              CLiente:
             </CardContent>
           </Card>
-        </div>
+        </Skeleton>
+      ) : (
+        data && (
+          <div>
+            <Card>
+              <CardContent className="p-4">
+                Numpedido: {data.numpedido} <br />
+                CLiente: {data.cliente}
+              </CardContent>
+            </Card>
+          </div>
+        )
       )}
-      {itens && (
-        <div>
-          <Card className="h-full">
-            <CardContent className="h-full p-2 w-full">
-              <TableP itens={itens} />
-            </CardContent>
-          </Card>
-        </div>
+      {isLoading || isLoadingItens ? (
+        <Skeleton className="bg-gray-500"></Skeleton>
+      ) : (
+        itens &&
+        data && (
+          <div>
+            <Card className="h-full">
+              <CardContent className="h-full p-2 w-full">
+                {itens.length > 0 ? (
+                  <TableP itens={itens} />
+                ) : (
+                  <div className="h-full flex justify-center items-center">
+                    <div>Nenhum item encontrado</div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )
       )}
     </div>
   );

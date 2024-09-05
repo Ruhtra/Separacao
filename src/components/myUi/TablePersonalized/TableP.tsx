@@ -54,9 +54,7 @@ export function TableP({ itens }: TablePProps) {
               key={i.codproduto}
               className="grid grid-rows-2 grid-cols-[4em_4em_1fr_4em] gap-3"
             >
-              <div className="col-span-3">
-                {i.descricao_item} contendo espaço grande demais
-              </div>
+              <div className="col-span-3">{i.descricao_item}</div>
               <div className="w-fit">
                 {i.qtd_separada ?? 0} / {i.qtd}
               </div>
