@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { IndexRoute } from "./routes/IndexRoute";
 import { SepararRoute } from "./routes/SepararRoute";
 import { Toaster } from "./components/ui/sonner";
+import { SelectForm } from "./components/myUi/teste";
 
 function Render() {
   return (
@@ -9,6 +10,7 @@ function Render() {
       <Routes>
         <Route path="/" element={<IndexRoute />} />
         <Route path="/separar" element={<SepararRoute />} />
+        <Route path="/teste" element={<SelectForm />} />
         {/* <Route path="/conferencia" element={<IndexRoute />} /> */}
       </Routes>
     </>

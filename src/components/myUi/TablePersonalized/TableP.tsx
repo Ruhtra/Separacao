@@ -4,7 +4,6 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { GetListItemDtoResponse } from "@/services/Querys/Items";
-import { BadgeIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
 export interface TablePProps {
