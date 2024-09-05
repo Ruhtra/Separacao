@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
   const [switchChecked, setSwitchChecked] = useState<boolean>(false);
 
   return (
-    <div className="h-full grid grid-rows-[auto_90%_auto] gap-2 py-4 ">
+    <div className="h-full grid grid-rows-[auto_90%_auto] grid-cols-1 gap-2 py-4">
       <div className="flex items-center gap-2">
         <Input
           placeholder="Buscar pelo Código do produto"
@@ -78,7 +78,7 @@ export function DataTable<TData, TValue>({
         </label>
         {/* </Button> */}
       </div>
-      <div className="rounded-md border h-full">
+      <div className="rounded-md border">
         <ScrollArea className="h-full">
           <Table>
             <TableHeader>
@@ -106,8 +106,9 @@ export function DataTable<TData, TValue>({
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                    {row.getVisibleCells().map((cell) => { retu(
+
+                      <TableCell key={cell.id} className={cellcla}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -117,10 +118,10 @@ export function DataTable<TData, TValue>({
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
+                <TableRow className="table-row-grid">
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-12 text-center"
                   >
                     No results.
                   </TableCell>
