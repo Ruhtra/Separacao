@@ -38,7 +38,7 @@ export function SepararRoute() {
   if (isLoading || isLoadingItens) return <h1>Carregando separação</h1>;
 
   return (
-    <div className="grid grid-rows-[auto_auto_80%] grid-cols-1 h-full p-4">
+    <div className="grid grid-rows-[5em_6em_calc(100%-11em)] bg-yellow-200 h-full p-4">
       <div>
         <Card className="">
           <CardContent className="flex p-4 gap-2 justify-center items-center">
@@ -63,7 +63,7 @@ export function SepararRoute() {
         </div>
       )}
       {itens && (
-        <div className="h-full">
+        <div>
           <Card className="h-full">
             <CardContent className="h-full p-2 w-full">
               <TableP itens={itens} />

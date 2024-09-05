@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { GetListItemDtoResponse } from "@/services/Querys/Items";
 import { useState } from "react";
@@ -23,7 +24,7 @@ export function TableP({ itens }: TablePProps) {
   });
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2 h-full">
       <div className="flex items-center justify-between gap-2">
         <Input
           placeholder="Buscar pelo Código"
@@ -45,27 +46,32 @@ export function TableP({ itens }: TablePProps) {
           Apenas em separação
         </label>
       </div>
-      <div className="flex flex-col">
-        {filteredItems.map((i) => (
-          <div
-            key={i.codproduto}
-            className="grid grid-rows-2 grid-cols-[4em_4em_1fr_4em] gap-3"
-          >
-            <div className="col-span-3">
-              {i.descricao_item} contendo espaço grande demais
+      <ScrollArea className="flex-grow rounded-md border">
+        <div className="p-4">
+          {filteredItems.map((i) => (
+            <div
+              key={i.codproduto}
+              className="grid grid-rows-2 grid-cols-[4em_4em_1fr_4em] gap-3"
+            >
+              <div className="col-span-3">
+                {i.descricao_item} contendo espaço grande demais
+              </div>
+              <div className="w-fit">
+                {i.qtd_separada ?? 0} / {i.qtd}
+              </div>
+              <div>{i.codproduto}</div>
+              <div>{i.embalagem}</div>
+              <div className="flex col-span-2 gap-2">
+                <Input className="w-14" />
+                <Button className="pl-0 pr-0 w-full">Sep</Button>
+                <Button className="pl-0 pr-0 w-full">Conf</Button>
+              </div>
             </div>
-            <div className="w-fit">
-              {i.qtd_separada ?? 0} / {i.qtd}
-            </div>
-            <div>{i.codproduto}</div>
-            <div>{i.embalagem}</div>
-            <div className="flex col-span-2 gap-2">
-              <Input className="w-14" />
-              <Button className="pl-0 pr-0 w-full">Sep</Button>
-              <Button className="pl-0 pr-0 w-full">Conf</Button>
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </ScrollArea>
+      <div className="p-2 flex justify-end">
+        <Button variant={"default"}>Confirmar</Button>
       </div>
     </div>
   );
