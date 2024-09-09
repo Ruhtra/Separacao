@@ -5,6 +5,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { GetListItemDtoResponse } from "@/services/Querys/Items";
 import { useState } from "react";
+import { Inputs } from "./Inputs";
+import {
+  LoaderCircleIcon,
+  CircleCheckBigIcon,
+  TriangleAlert,
+} from "lucide-react";
 
 export interface TablePProps {
   itens: GetListItemDtoResponse[];
@@ -48,27 +54,26 @@ export function TableP({ itens }: TablePProps) {
         </label>
       </div>
       <ScrollArea className="flex-grow rounded-md border">
-        <div className="p-4">
+        <div className="p-4 ">
           {filteredItems.map((i) => (
             <div
               key={i.codproduto}
-              className="grid grid-rows-2 grid-cols-[4em_4em_1fr_4em] gap-3"
+              className="grid grid-rows-2 grid-cols-[1em_4em_4em_1fr_4em] gap-3 p-2 border-b-2"
             >
+              <div className="flex items-center">
+                <CircleCheckBigIcon />
+              </div>
               <div className="col-span-3">{i.descricao_item}</div>
               <div className="w-fit">
                 {i.qtd_separada ?? 0} / {i.qtd}
               </div>
-              <div>{i.codproduto}</div>
+              <div className="col-span-2">{i.codproduto}</div>
               <div>{i.embalagem}</div>
               <div className="flex col-span-2 gap-2 relative">
                 {i.situacao_separacao_item == null ? (
-                  <>
-                    <Input className="w-14" />
-                    <Button className="pl-0 pr-0 w-full">Parc.</Button>
-                    <Button className="pl-0 pr-0 w-full">Comp.</Button>
-                  </>
+                  <Inputs idseparacao_item={i.idseparacao_item} />
                 ) : (
-                  <Badge className=" absolute bg-green-400 right-0 text-2xs hover:bg-green-400">
+                  <Badge className="bg-green-400 h-fit ml-auto  text-2xs hover:bg-green-400">
                     Separado
                   </Badge>
                 )}
