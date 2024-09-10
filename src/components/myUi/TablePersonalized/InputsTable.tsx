@@ -1,15 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useConfirmItem } from "@/services/Querys/Items";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  CircleCheckBigIcon,
-  LoaderCircleIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { TableContext } from "./TableContext";
 
 const FormSchema = z.object({
   qtd: z.number().min(0),
@@ -17,10 +13,13 @@ const FormSchema = z.object({
 
 export type InputsProps = {
   idseparacao_item: number;
+  index: number;
 };
 
-export function InputsTable({ idseparacao_item }: InputsProps) {
-  const { mutate, status, failureCount } = useConfirmItem();
+export function InputsTable({ idseparacao_item, index }: InputsProps) {
+  const { calls } = useContext(TableContext);
+
+  const { mutate, status } = calls[index];
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -76,10 +75,6 @@ export function InputsTable({ idseparacao_item }: InputsProps) {
               </FormItem>
             )}
           />
-          {status === "pending" && failureCount == 0 && <LoaderCircleIcon />}{" "}
-          {status === "error" || (failureCount >= 1 && <TriangleAlertIcon />)}
-          {status === "success" ||
-            (status === "idle" && <CircleCheckBigIcon />)}
           <Button
             onClick={form.handleSubmit(onSubmitConfirmItem())}
             disabled={status == "pending"}

@@ -63,7 +63,7 @@ export interface PostConfirmItemDtoRequest {
 export function useConfirmItem() {
   return useMutation({
     mutationFn: async (item: PostConfirmItemDtoRequest) => {
-      await api.post(`${PathUrl}/PostConfirmItemm`, item);
+      await api.post(`${PathUrl}/PostConfirmItem`, item);
     },
     retry: Infinity,
     // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),

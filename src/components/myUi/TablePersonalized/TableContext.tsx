@@ -1,6 +1,10 @@
-import { GetListItemDtoResponse } from "@/services/Querys/Items";
+import {
+  GetListItemDtoResponse,
+  PostConfirmItemDtoRequest,
+  useConfirmItem,
+} from "@/services/Querys/Items";
+import { UseMutationResult } from "@tanstack/react-query";
 import { createContext, ReactNode, useState } from "react";
-
 interface TableContextType {
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
@@ -9,6 +13,12 @@ interface TableContextType {
 
   filteredItems: GetListItemDtoResponse[];
   itens: GetListItemDtoResponse[];
+
+  calls: UseMutationResult<void, any, PostConfirmItemDtoRequest, unknown>[];
+  //   onSubmitConfirmItem: ((
+  //     idseparacaoItem: number,
+  //     index: number
+  //   ) => (data: z.infer<typeof FormSchema>) => void)[];
 }
 type TableProps = {
   children: ReactNode;
@@ -30,6 +40,21 @@ export function TableProvider({ itens, children }: TableProps) {
     return matchesCodigoFornecedor;
   });
 
+  const calls = itens.map(() => {
+    return useConfirmItem();
+  });
+
+  //   const onSubmitConfirmItem = itens.map(() => {
+  //     return (idseparacaoItem: number, index: number) => {
+  //       return (data: z.infer<typeof FormSchema>) => {
+  //         calls[index].mutate({
+  //           idseparacao_item: idseparacaoItem,
+  //           qtd: data.qtd,
+  //         });
+  //       };
+  //     };
+  //   });
+
   return (
     <TableContext.Provider
       value={{
@@ -40,6 +65,9 @@ export function TableProvider({ itens, children }: TableProps) {
 
         filteredItems: filteredItems,
         itens: itens,
+
+        calls,
+        // onSubmitConfirmItem,
       }}
     >
       {children}
