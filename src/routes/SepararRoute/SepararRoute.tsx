@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { TableP } from "@/components/myUi/TablePersonalized/TableP";
+import { TableMain } from "@/components/myUi/TablePersonalized/TableMain";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import {
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TableProvider } from "@/components/myUi/TablePersonalized/TableContext";
 
 export function SepararRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,7 +83,9 @@ export function SepararRoute() {
             <Card className="h-full">
               <CardContent className="h-full p-2 w-full">
                 {itens.length > 0 ? (
-                  <TableP itens={itens} />
+                  <TableProvider itens={itens}>
+                    <TableMain />
+                  </TableProvider>
                 ) : (
                   <div className="h-full flex justify-center items-center">
                     <div>Nenhum item encontrado</div>

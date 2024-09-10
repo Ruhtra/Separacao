@@ -8,7 +8,6 @@ import {
   LoaderCircleIcon,
   TriangleAlertIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,9 +19,8 @@ export type InputsProps = {
   idseparacao_item: number;
 };
 
-export function Inputs({ idseparacao_item }: InputsProps) {
+export function InputsTable({ idseparacao_item }: InputsProps) {
   const { mutate, status, failureCount } = useConfirmItem();
-  const [nextTime, setNextTime] = useState(0);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -39,29 +37,6 @@ export function Inputs({ idseparacao_item }: InputsProps) {
       });
     };
   }
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    // Função para iniciar o timer
-    const startTimer = () => {
-      setNextTime(10); // Resetar o tempo para 10 segundos
-      timer = setInterval(() => {
-        setNextTime((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    };
-
-    startTimer();
-
-    // Limpar o intervalo quando o componente for desmontado ou o failureCount mudar
-    return () => clearInterval(timer);
-  }, [failureCount]);
 
   return (
     <>
@@ -101,10 +76,7 @@ export function Inputs({ idseparacao_item }: InputsProps) {
               </FormItem>
             )}
           />
-          {status === "pending" && failureCount >= 1 && nextTime}
-          {status === "pending" && failureCount == 0 && (
-            <LoaderCircleIcon />
-          )}{" "}
+          {status === "pending" && failureCount == 0 && <LoaderCircleIcon />}{" "}
           {status === "error" || (failureCount >= 1 && <TriangleAlertIcon />)}
           {status === "success" ||
             (status === "idle" && <CircleCheckBigIcon />)}
