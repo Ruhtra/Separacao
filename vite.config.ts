@@ -5,34 +5,40 @@ import { VitePWA } from "vite-plugin-pwa";
 // import mkcert from "vite-plugin-mkcert";
 
 export default defineConfig({
-  server: {
-    hmr: {
-      overlay: false,
-    },
-  },
+  // server: {
+  //   hmr: {
+  //     overlay: false,
+  //   },
+  // },
   plugins: [
     react(),
     VitePWA({
-      // add this to cache all the imports
       workbox: {
         globPatterns: ["**/*"],
       },
-      // add this to cache all the
-      // static assets in the public folder
       includeAssets: ["**/*"],
       manifest: {
-        theme_color: "#f69435",
-        background_color: "#f69435",
+        orientation: "portrait",
         display: "standalone",
-        scope: "/",
+        lang: "pt-BR",
+        name: "Separacao",
+        short_name: "Separacao",
         start_url: "/",
-        short_name: "Vite PWA",
-        description: "Vite PWA Demo",
-        name: "Vite PWA",
+        scope: "/",
+        description: "Projeto para separação",
+        theme_color: "#8936FF",
+        background_color: "#ffcd01",
         icons: [
           {
-            src: "/manifest/icon512_maskable.png",
+            purpose: "maskable",
             sizes: "512x512",
+            src: "/manifest/icon512_maskable.png",
+            type: "image/png",
+          },
+          {
+            purpose: "any",
+            sizes: "512x512",
+            src: "/manifest/icon512_rounded.png",
             type: "image/png",
           },
         ],
