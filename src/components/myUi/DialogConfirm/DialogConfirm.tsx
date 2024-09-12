@@ -13,7 +13,6 @@ import { ReactNode, useContext } from "react";
 import { TableContext } from "../TablePersonalized/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../TablePersonalized/Utils";
-
 export type DialogConfirmProps = {
   children?: ReactNode;
 };
@@ -27,9 +26,13 @@ export function DialogConfirm({ children }: DialogConfirmProps) {
         <DialogTrigger asChild>
           <Button variant="outline">Share</Button>
         </DialogTrigger>
-        <DialogContent className="flex flex-col max-w-[90%] ">
+        <DialogContent
+          className="flex flex-col max-w-[90%] "
+          showCloseIcon={true}
+        >
           <DialogHeader>
             <DialogTitle>Confirmar separação</DialogTitle>
+
             <DialogDescription>
               Confirme os itens da separação
             </DialogDescription>
