@@ -83,7 +83,11 @@ export function SepararRoute() {
             <Card className="h-full">
               <CardContent className="h-full p-2 w-full">
                 {itens.length > 0 ? (
-                  <TableProvider itens={itens}>
+                  <TableProvider
+                    itens={itens}
+                    idOperador={idOperador}
+                    numpedido={searchParams.get("numpedido") || ""}
+                  >
                     <TableMain />
                   </TableProvider>
                 ) : (

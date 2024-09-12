@@ -13,12 +13,39 @@ import { ReactNode, useContext } from "react";
 import { TableContext } from "../TablePersonalized/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../TablePersonalized/Utils";
+import { useCompleteSeparacao } from "@/services/Querys/Separacao";
+import { InternetContext } from "@/Contexts/InternetContext";
+import { toast } from "sonner";
+import { LoaderCircleIcon } from "lucide-react";
 export type DialogConfirmProps = {
   children?: ReactNode;
 };
 
-export function DialogConfirm({ children }: DialogConfirmProps) {
-  const { itens, calls } = useContext(TableContext);
+export function DialogConfirm({}: DialogConfirmProps) {
+  const { itens, calls, idOperador, numpedido } = useContext(TableContext);
+  const { isOnline } = useContext(InternetContext);
+
+  const { status, mutate } = useCompleteSeparacao();
+
+  const handleFinalizar = () => {
+    const ErroExistente = calls.some(
+      (c) => c.status != "success" && c.status != "idle"
+    );
+
+    if (ErroExistente)
+      return toast.error(
+        "Não foi possível enviar pois nem todos os itens foram enviado para o servidor, aguarde até que todos estejam marcados como concluído"
+      );
+    if (!isOnline)
+      return toast.error("Não é possível separar sem acesso a internet");
+
+    console.log("cheguei");
+
+    mutate({
+      idOperador,
+      numpedido,
+    });
+  };
 
   return (
     <>
@@ -29,7 +56,7 @@ export function DialogConfirm({ children }: DialogConfirmProps) {
           </Button>
         </DialogTrigger>
         <DialogContent
-          className="flex flex-col max-w-[90%] "
+          className="flex flex-col max-w-[90%]"
           showCloseIcon={true}
         >
           <DialogHeader>
@@ -39,6 +66,12 @@ export function DialogConfirm({ children }: DialogConfirmProps) {
               Confirme os itens da separação
             </DialogDescription>
           </DialogHeader>
+
+          {status == "pending" && (
+            <div className="w-full h-full absolute inset-0 bg-white z-10 flex justify-center items-center">
+              <LoaderCircleIcon size={64} className="w-full animate-spin" />
+            </div>
+          )}
           <ScrollArea className="bg-primary-foreground ">
             <div className="flex flex-col max-h-[70svh] ">
               {itens.map((e, i) => (
@@ -63,7 +96,9 @@ export function DialogConfirm({ children }: DialogConfirmProps) {
               ))}
             </div>
           </ScrollArea>
-          <DialogFooter className="justify-end">{children}</DialogFooter>
+          <DialogFooter className="justify-end">
+            <Button onClick={handleFinalizar}>Confirmar</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>

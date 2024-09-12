@@ -1,41 +1,19 @@
-import { Button } from "@/components/ui/button";
 import { SearchTable } from "./SearchTable";
 import { DataTable } from "./DataTable";
-import { useContext } from "react";
-import { TableContext } from "./TableContext";
-import { toast } from "sonner";
 import { DialogConfirm } from "../DialogConfirm/DialogConfirm";
-import { InternetContext } from "@/Contexts/InternetContext";
 
 export interface TablePProps {}
 
 export function TableMain({}: TablePProps) {
-  const { calls } = useContext(TableContext);
-  const { isOnline } = useContext(InternetContext);
-  const handleFinalizar = () => {
-    console.log("entrei");
-
-    const ErroExistente = calls.some(
-      (c) => c.status != "success" && c.status != "idle"
-    );
-
-    if (ErroExistente)
-      return toast.error(
-        "Não foi possível enviar pois nem todos os itens foram enviado para o servidor, aguarde até que todos estejam marcados como concluído"
-      );
-    if (!isOnline)
-      return toast.error("Não é possível separar sem acesso a internet");
-  };
-
   return (
     <div className="flex flex-col gap-2 h-full">
       <SearchTable />
       <DataTable />
       <div className="p-2 flex justify-end">
         <DialogConfirm>
-          <Button variant={"default"} onClick={handleFinalizar}>
+          {/* <Button variant={"default"}>
             Confirmar
-          </Button>
+          </Button> */}
         </DialogConfirm>
       </div>
     </div>

@@ -6,6 +6,8 @@ import {
 import { UseMutationResult } from "@tanstack/react-query";
 import { createContext, ReactNode, useState } from "react";
 interface TableContextType {
+  idOperador: string;
+  numpedido: string;
   inputText: string;
   setInputText: React.Dispatch<React.SetStateAction<string>>;
   toogleFilter: boolean;
@@ -22,6 +24,9 @@ interface TableContextType {
 }
 type TableProps = {
   children: ReactNode;
+  idOperador: string;
+  numpedido: string;
+
   itens: GetListItemDtoResponse[];
 };
 
@@ -29,7 +34,12 @@ export const TableContext = createContext<TableContextType>(
   {} as TableContextType
 );
 
-export function TableProvider({ itens, children }: TableProps) {
+export function TableProvider({
+  itens,
+  children,
+  idOperador,
+  numpedido,
+}: TableProps) {
   const [inputText, setInputText] = useState<string>("");
   const [toogleFilter, setToogleFilter] = useState<boolean>(false);
 
@@ -68,6 +78,8 @@ export function TableProvider({ itens, children }: TableProps) {
 
         calls,
         // onSubmitConfirmItem,
+        idOperador,
+        numpedido,
       }}
     >
       {children}

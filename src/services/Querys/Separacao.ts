@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { api } from "../Api";
 import { toast } from "sonner";
 const PathUrl = `/Separacao`;
@@ -47,4 +47,47 @@ export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
   }
 
   return query;
+}
+
+export type CompleteSeparacaoDtoRequest = {
+  numpedido?: string;
+  idOperador?: string;
+};
+
+export function useCompleteSeparacao() {
+  return useMutation({
+    mutationFn: async (request: CompleteSeparacaoDtoRequest) => {
+      await api.post(`${PathUrl}/PostComplete`, request);
+    },
+    // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    retryDelay: 10 * 1000,
+    onSuccess: (_data, _variables) => {
+      // queryClient.setQueryData<GetListItemDtoResponse[]>(
+      //   ["itemList", "299033173"],
+      //   (oldData) => {
+      //     if (!oldData) return [];
+      //     // Find and update the specific item
+      //     return oldData.map((listItem) =>
+      //       listItem.idseparacao_item === variables.idseparacao_item
+      //         ? {
+      //             ...listItem,
+      //             qtd_separada: variables.qtd,
+      //             situacao_separacao_item: "sim",
+      //           }
+      //         : listItem
+      //     );
+      //   }
+      // );
+    },
+
+    onError: (error: any) => {
+      const statusCode = error?.response?.status;
+      // Mantém o status como "error" para mostrar o ícone de erro
+      if (statusCode == 200) {
+        console.log("enviado");
+      } else {
+        toast.error("ERRO! contate o suporte");
+      }
+    },
+  });
 }
