@@ -9,7 +9,7 @@ export function DataTable() {
   const { filteredItems, itens, calls } = useContext(TableContext);
   return (
     <ScrollArea className="flex-grow rounded-md border">
-      <div className="p-4 ">
+      <div className="p-0 ">
         {itens.map((item, index) => {
           //Filtra pelos que não existem
           const prod = filteredItems.find(
@@ -20,7 +20,7 @@ export function DataTable() {
           return (
             <div
               key={item.codproduto}
-              className={`grid grid-rows-2 grid-cols-[1.5em_4em_4em_1fr_4em] gap-x-2 gap-y-1 p-2 border-b-2 ${
+              className={`grid grid-rows-[auto_fit-content(100%)] grid-cols-[1.3em_4em_4em_1fr_5em] gap-x-2 gap-y-0 p-2 border-b-2 ${
                 GetStatus({
                   status: calls[index].status,
                   failureCount: calls[index].failureCount,
@@ -33,10 +33,10 @@ export function DataTable() {
                 status={calls[index].status}
                 failureCount={calls[index].failureCount}
               />
-              <div className="col-span-3 flex items-center">
+              <div className="col-span-3 flex items-center justify-left">
                 {item.descricao_item}
               </div>
-              <div className="w-fit flex items-center">
+              <div className="w-fit flex items-start justify-center">
                 {item.qtd_separada ?? 0} / {item.qtd}
               </div>
               <div className="col-span-2 flex items-center">

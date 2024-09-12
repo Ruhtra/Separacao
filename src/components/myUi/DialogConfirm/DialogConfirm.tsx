@@ -24,7 +24,9 @@ export function DialogConfirm({ children }: DialogConfirmProps) {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">Share</Button>
+          <Button size={"lg"} variant="default">
+            Confirmar
+          </Button>
         </DialogTrigger>
         <DialogContent
           className="flex flex-col max-w-[90%] "

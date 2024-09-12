@@ -20,7 +20,7 @@ export function GetIconStatus({ status, failureCount }: GetIconStatusProps) {
   return (
     <div className="flex items-center">
       {GetStatus({ status, failureCount }) == "loading" && (
-        <LoaderCircleIcon width={"auto"} className="w-full animate-spin" />
+        <LoaderCircleIcon className="w-full animate-spin" />
       )}
       {GetStatus({ status, failureCount }) == "error" && (
         <TriangleAlertIcon className="text-red-500" />
