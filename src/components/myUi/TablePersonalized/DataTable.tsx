@@ -1,41 +1,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  CircleCheckBigIcon,
-  LoaderCircleIcon,
-  TriangleAlertIcon,
-} from "lucide-react";
 import { InputsTable } from "./InputsTable";
 import { Badge } from "@/components/ui/badge";
 import { useContext } from "react";
 import { TableContext } from "./TableContext";
-
-type GetIconStatusProps = {
-  status: string;
-  failureCount: number;
-};
-function GetStatus({
-  status,
-  failureCount,
-}: GetIconStatusProps): "error" | "success" | "loading" | undefined {
-  if (status === "pending" && failureCount == 0) return "loading";
-  if (status === "error" || failureCount >= 1) return "error";
-  if (status === "success" || status === "idle") return "success";
-}
-function GetIconStatus({ status, failureCount }: GetIconStatusProps) {
-  return (
-    <div className="flex items-center">
-      {GetStatus({ status, failureCount }) == "loading" && (
-        <LoaderCircleIcon width={"auto"} className="w-full animate-spin" />
-      )}
-      {GetStatus({ status, failureCount }) == "error" && (
-        <TriangleAlertIcon className="text-red-500" />
-      )}
-      {GetStatus({ status, failureCount }) == "success" && (
-        <CircleCheckBigIcon className="text-green-500" />
-      )}
-    </div>
-  );
-}
+import { GetIconStatus, GetStatus } from "./Utils";
 
 export function DataTable() {
   const { filteredItems, itens, calls } = useContext(TableContext);

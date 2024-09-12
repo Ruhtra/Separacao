@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useGetListOperador } from "@/services/Querys/Operador";
+import { ArrowRightIcon } from "lucide-react";
 
 const FormSchema = z.object({
   id: z
@@ -52,21 +53,21 @@ export function IndexRoute() {
     <>
       <div className="h-full bg-gray-500 flex items-center justify-center">
         <Card className="bg-yellow-200 min-w-[20em] flex items-center justify-center">
-          <CardContent className="p-5 bgw-full">
+          <CardContent className="p-5">
             <Form {...form}>
-              <form className="w-full flex flex-col items-center justify-center m-auto gap-2">
+              <form className="w-full flex items-center justify-center m-auto gap-2">
                 <FormField
                   control={form.control}
                   name="id"
                   render={({ field }) => (
-                    <FormItem className="flex justify-center flex-col items-center">
+                    <FormItem className="flex justify-center flex-col items-center w-fit">
                       <FormLabel>Operador</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="bg-red-500 w-44 bg-primary text-white">
                             <SelectValue placeholder="Selecione Operador" />
                           </SelectTrigger>
                         </FormControl>
@@ -88,21 +89,25 @@ export function IndexRoute() {
                   )}
                 />
 
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-4">
                   {/* Botão para redirecionar para /separar */}
                   <Button
                     type="button"
+                    className="min-w-28 flex justify-between items-center"
                     onClick={form.handleSubmit(onSubmit("/separar"))}
                   >
                     Separar
+                    <ArrowRightIcon className="w-5" />
                   </Button>
 
                   {/* Botão para redirecionar para /conferir */}
                   <Button
                     type="button"
+                    className="min-w-28 flex justify-between items-center"
                     onClick={form.handleSubmit(onSubmit("/conferir"))}
                   >
                     Conferir
+                    <ArrowRightIcon className="w-5" />
                   </Button>
                 </div>
               </form>

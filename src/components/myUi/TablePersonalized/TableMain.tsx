@@ -4,6 +4,7 @@ import { DataTable } from "./DataTable";
 import { useContext } from "react";
 import { TableContext } from "./TableContext";
 import { toast } from "sonner";
+import { DialogConfirm } from "../DialogConfirm/DialogConfirm";
 
 export interface TablePProps {}
 
@@ -15,16 +16,22 @@ export function TableMain({}: TablePProps) {
     const ErroExistente = calls.some(
       (c) => c.status != "success" && c.status != "idle"
     );
-    if (ErroExistente) return toast.error("Nem todos os itens foram enviados");
+    if (ErroExistente)
+      return toast.error(
+        "Não foi possível enviar pois nem todos os itens foram enviado para o servidor, aguarde até que todos estejam marcados como concluído"
+      );
   };
+
   return (
     <div className="flex flex-col gap-2 h-full">
       <SearchTable />
       <DataTable />
       <div className="p-2 flex justify-end">
-        <Button onClick={handleFinalizar} variant={"default"}>
-          Confirmar
-        </Button>
+        <DialogConfirm>
+          <Button variant={"default"} onClick={handleFinalizar}>
+            Confirmar
+          </Button>
+        </DialogConfirm>
       </div>
     </div>
   );
