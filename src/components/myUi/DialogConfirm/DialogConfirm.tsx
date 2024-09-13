@@ -9,7 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { TableContext } from "../TablePersonalized/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../TablePersonalized/Utils";
@@ -17,11 +17,13 @@ import { useCompleteSeparacao } from "@/services/Querys/Separacao";
 import { InternetContext } from "@/Contexts/InternetContext";
 import { toast } from "sonner";
 import { LoaderCircleIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 export type DialogConfirmProps = {
   children?: ReactNode;
 };
 
 export function DialogConfirm({}: DialogConfirmProps) {
+  const navigate = useNavigate();
   const { itens, calls, idOperador, numpedido } = useContext(TableContext);
   const { isOnline } = useContext(InternetContext);
 
@@ -39,13 +41,15 @@ export function DialogConfirm({}: DialogConfirmProps) {
     if (!isOnline)
       return toast.error("Não é possível separar sem acesso a internet");
 
-    console.log("cheguei");
-
     mutate({
       idOperador,
       numpedido,
     });
   };
+
+  useEffect(() => {
+    if (status == "success") navigate(0);
+  }, [status]);
 
   return (
     <>

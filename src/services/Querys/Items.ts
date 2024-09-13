@@ -60,7 +60,7 @@ export interface PostConfirmItemDtoRequest {
   qtd: number;
 }
 
-export function useConfirmItem() {
+export function useConfirmItem(numpedido: string) {
   return useMutation({
     mutationFn: async (item: PostConfirmItemDtoRequest) => {
       await api.post(`${PathUrl}/PostConfirmItem`, item);
@@ -70,7 +70,7 @@ export function useConfirmItem() {
     retryDelay: 10 * 1000,
     onSuccess: (_data, variables) => {
       queryClient.setQueryData<GetListItemDtoResponse[]>(
-        ["itemList", "299033173"],
+        ["itemList", numpedido],
         (oldData) => {
           if (!oldData) return [];
 

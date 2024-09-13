@@ -53,7 +53,7 @@ export function TableProvider({
   });
 
   const calls = itens.map(() => {
-    return useConfirmItem();
+    return useConfirmItem(numpedido);
   });
 
   //   const onSubmitConfirmItem = itens.map(() => {
