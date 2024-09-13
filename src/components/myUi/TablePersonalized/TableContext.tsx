@@ -40,6 +40,8 @@ export function TableProvider({
   idOperador,
   numpedido,
 }: TableProps) {
+  console.log(numpedido);
+
   const [inputText, setInputText] = useState<string>("");
   const [toogleFilter, setToogleFilter] = useState<boolean>(false);
 

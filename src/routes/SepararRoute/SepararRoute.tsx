@@ -1,103 +1,127 @@
 import { useSearchParams } from "react-router-dom";
 import { TableMain } from "@/components/myUi/TablePersonalized/TableMain";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { GetListItemDtoRequest, useGetListItem } from "@/services/Querys/Items";
 import {
   GetSeparacaoDtoRequest,
+  useGetNextQueue,
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TableProvider } from "@/components/myUi/TablePersonalized/TableContext";
+import { useEffect, useState } from "react";
 
 export function SepararRoute() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const idOperador = searchParams.get("idoperador");
+
   if (!idOperador) return <h1>IdOperador não encontrado</h1>;
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const numpedido = event.target.value;
-    setSearchParams({ idoperador: idOperador, numpedido });
-  };
+  const {
+    data: dataNextQueue,
+    isLoading: isLoadingNextQueue,
+    refetch: refetechNextQueue,
+  } = useGetNextQueue({ idOperador });
+  const numpedido = dataNextQueue?.numpedido || "";
 
-  const request: GetSeparacaoDtoRequest = {
-    numpedido: searchParams.get("numpedido") || "",
-  };
-  const requestitem: GetListItemDtoRequest = {
-    numpedido: searchParams.get("numpedido") || "",
-  };
-  const { data, isLoading, refetch } = useGetSeparacao(request);
+  const request: GetSeparacaoDtoRequest = { numpedido };
+  const requestItem: GetListItemDtoRequest = { numpedido };
+
+  const [time, setTime] = useState(15);
+
+  const {
+    data: dataSeparacao,
+    isLoading: isLoadingSeparacao,
+    refetch: refetchSeparacao,
+  } = useGetSeparacao(request);
+
   const {
     data: itens,
     isLoading: isLoadingItens,
     refetch: refetchItens,
-  } = useGetListItem(requestitem);
-  const handleSearchClick = async () => {
-    await refetch();
-    await refetchItens();
-  };
+  } = useGetListItem(requestItem);
+
+  useEffect(() => {
+    if (numpedido) {
+      refetchSeparacao();
+      refetchItens();
+    }
+  }, [numpedido, refetchSeparacao, refetchItens]);
+
+  useEffect(() => {
+    console.log(dataNextQueue);
+
+    if (dataNextQueue?.numpedido == "-1") {
+      // Substitua 'value' pelo campo correto do seu dado
+      if (time === 0) {
+        refetechNextQueue(); // Refaz a requisição
+        setTime(15); // Reinicia o cronômetro
+      } else {
+        const intervalId = setInterval(() => {
+          setTime((prev) => prev - 1);
+        }, 1000); // Atualiza o cronômetro a cada segundo
+
+        return () => clearInterval(intervalId); // Limpa o intervalo quando o componente desmonta ou o cronômetro reinicia
+      }
+    } else {
+      // Se a resposta não for -1, pare de mostrar o cronômetro
+      setTime(15); // Reseta o cronômetro se a resposta for diferente de -1
+    }
+  }, [dataNextQueue, time, refetechNextQueue]);
+
+  const isLoading = isLoadingSeparacao || isLoadingItens || isLoadingNextQueue;
+  const showSkeleton = isLoading;
 
   return (
-    <div className="grid grid-rows-[5em_6em_calc(100%-11em)] bg-yellow-200 h-full p-4">
-      <div>
-        <Card className="">
-          <CardContent className="flex p-4 gap-2 justify-center items-center">
-            <label htmlFor="numpedido">Numpedido</label>
-            <Input
-              type="text"
-              value={searchParams.get("numpedido") || ""}
-              onChange={handleInputChange}
-            />
-            <Button onClick={handleSearchClick}>Buscar</Button>
-          </CardContent>
-        </Card>
-      </div>
-      {isLoading || isLoadingItens ? (
+    <div className="grid grid-rows-[6em_calc(100%-6em)] bg-yellow-200 h-full p-4">
+      {/* Cabeçalho com informações do pedido */}
+      {showSkeleton ? (
         <Skeleton className="bg-gray-500 h-fit">
           <Card className="opacity-0">
             <CardContent className="p-4">
               Numpedido: <br />
-              CLiente:
+              Cliente:
             </CardContent>
           </Card>
         </Skeleton>
+      ) : dataSeparacao != null ? (
+        <Card>
+          <CardContent className="p-4">
+            Numpedido: {dataSeparacao.numpedido} <br />
+            Cliente: {dataSeparacao.cliente}
+          </CardContent>
+        </Card>
       ) : (
-        data && (
-          <div>
-            <Card>
-              <CardContent className="p-4">
-                Numpedido: {data.numpedido} <br />
-                CLiente: {data.cliente}
-              </CardContent>
-            </Card>
-          </div>
-        )
+        <Card>
+          <CardContent className="p-4">
+            Nenhum Pedido encontrado <br />
+            Tentando novamente em: {time}
+          </CardContent>
+        </Card>
       )}
-      {isLoading || isLoadingItens ? (
+
+      {/* Tabela com itens */}
+      {showSkeleton ? (
         <Skeleton className="bg-gray-500"></Skeleton>
       ) : (
-        itens &&
-        data && (
-          <div>
-            <Card className="h-full">
-              <CardContent className="h-full p-2 w-full">
-                {itens.length > 0 ? (
-                  <TableProvider
-                    itens={itens}
-                    idOperador={idOperador}
-                    numpedido={searchParams.get("numpedido") || ""}
-                  >
-                    <TableMain />
-                  </TableProvider>
-                ) : (
-                  <div className="h-full flex justify-center items-center">
-                    <div>Nenhum item encontrado</div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+        itens && (
+          <Card className="h-full">
+            <CardContent className="h-full p-2 w-full">
+              {itens.length > 0 ? (
+                <TableProvider
+                  itens={itens}
+                  idOperador={idOperador}
+                  numpedido={numpedido}
+                >
+                  <TableMain />
+                </TableProvider>
+              ) : (
+                <div className="h-full flex justify-center items-center">
+                  <div>Nenhum item encontrado</div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         )
       )}
     </div>

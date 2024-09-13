@@ -49,7 +49,7 @@ export function useGetListItem(request: GetListItemDtoRequest) {
     },
     staleTime: 1000 * 60, // 1 minuto
     enabled: false,
-    retry: false,
+    retry: 10 * 1000,
   });
 
   return query;

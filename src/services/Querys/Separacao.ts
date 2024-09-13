@@ -35,16 +35,16 @@ export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
     retry: false,
   });
 
-  if (query.error) {
-    const error = query.error as any;
-    const statusCode = error?.response?.status;
+  // if (query.error) {
+  //   const error = query.error as any;
+  //   const statusCode = error?.response?.status;
 
-    if (statusCode === 404) {
-      toast.error("Pedido não encontrado!");
-    } else {
-      toast.error("Erro desconhecido, contate o suporte!");
-    }
-  }
+  //   if (statusCode === 404) {
+  //     toast.error("Pedido não encontrado!");
+  //   } else {
+  //     toast.error("Erro desconhecido, contate o suporte!");
+  //   }
+  // }
 
   return query;
 }
@@ -59,26 +59,8 @@ export function useCompleteSeparacao() {
     mutationFn: async (request: CompleteSeparacaoDtoRequest) => {
       await api.post(`${PathUrl}/PostComplete`, request);
     },
-    // retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    retryDelay: 10 * 1000,
-    onSuccess: (_data, _variables) => {
-      // queryClient.setQueryData<GetListItemDtoResponse[]>(
-      //   ["itemList", "299033173"],
-      //   (oldData) => {
-      //     if (!oldData) return [];
-      //     // Find and update the specific item
-      //     return oldData.map((listItem) =>
-      //       listItem.idseparacao_item === variables.idseparacao_item
-      //         ? {
-      //             ...listItem,
-      //             qtd_separada: variables.qtd,
-      //             situacao_separacao_item: "sim",
-      //           }
-      //         : listItem
-      //     );
-      //   }
-      // );
-    },
+    retry: false,
+    onSuccess: (_data, _variables) => {},
 
     onError: (error: any) => {
       const statusCode = error?.response?.status;
@@ -90,4 +72,43 @@ export function useCompleteSeparacao() {
       }
     },
   });
+}
+
+export type GetNextQueueDtoRequest = {
+  idOperador?: string;
+};
+
+export type GetNextQueueDtoResponse = {
+  numpedido?: string;
+};
+
+export function useGetNextQueue(request: GetNextQueueDtoRequest) {
+  const query = useQuery<GetNextQueueDtoResponse>({
+    queryKey: ["numpedido", request.idOperador],
+    queryFn: async () => {
+      const response = await api.get<GetNextQueueDtoResponse>(
+        `${PathUrl}/GetNextQueue`,
+        {
+          params: request,
+        }
+      );
+      return response.data;
+    },
+    staleTime: 1000 * 60, // 1 minute
+    retryDelay: 15 * 1000,
+    retry: true,
+  });
+
+  // if (query.error) {
+  //   const error = query.error as any;
+  //   const statusCode = error?.response?.status;
+
+  //   if (statusCode === 404) {
+  //     toast.error("Nenhum pedido encontrado!");
+  //   } else {
+  //     toast.error("Erro desconhecido, contate o suporte!");
+  //   }
+  // }
+
+  return query;
 }
