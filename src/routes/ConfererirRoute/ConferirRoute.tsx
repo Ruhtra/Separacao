@@ -1,15 +1,16 @@
 import { useSearchParams } from "react-router-dom";
-import { TableMain } from "@/components/myUi/TablePersonalized/TableMain";
+import { TableMain } from "@/components/myUi/TablePersonalizedConferencia/TableMain";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { GetListItemDtoRequest, useGetListItem } from "@/services/Querys/Items";
 import {
-  GetSeparacaoDtoRequest,
-  useGetSeparacao,
-} from "@/services/Querys/Separacao";
+  useGetConferencia,
+  // useCompleteConferencia,
+  GetConferenciaDtoRequest,
+} from "@/services/Querys/Conferir";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TableProvider } from "@/components/myUi/TablePersonalized/Context/TableContext";
+import { TableProvider } from "@/components/myUi/TablePersonalizedConferencia/Context/TableContext";
 
 export function ConferirRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,13 +22,13 @@ export function ConferirRoute() {
     setSearchParams({ idoperador: idOperador, numpedido });
   };
 
-  const request: GetSeparacaoDtoRequest = {
+  const request: GetConferenciaDtoRequest = {
     numpedido: searchParams.get("numpedido") || "",
   };
   const requestitem: GetListItemDtoRequest = {
     numpedido: searchParams.get("numpedido") || "",
   };
-  const { data, isLoading, refetch } = useGetSeparacao(request);
+  const { data, isLoading, refetch } = useGetConferencia(request);
   const {
     data: itens,
     isLoading: isLoadingItens,
