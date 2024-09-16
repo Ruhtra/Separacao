@@ -8,7 +8,7 @@ import {
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TableProvider } from "@/components/myUi/TablePersonalized/TableContext";
+import { TableProvider } from "@/components/myUi/TablePersonalized/Context/TableContext";
 import { useEffect, useState } from "react";
 
 export function SepararRoute() {
@@ -49,23 +49,19 @@ export function SepararRoute() {
   }, [numpedido, refetchSeparacao, refetchItens]);
 
   useEffect(() => {
-    console.log(dataNextQueue);
-
     if (dataNextQueue?.numpedido == "-1") {
-      // Substitua 'value' pelo campo correto do seu dado
       if (time === 0) {
-        refetechNextQueue(); // Refaz a requisição
-        setTime(15); // Reinicia o cronômetro
+        refetechNextQueue();
+        setTime(15);
       } else {
         const intervalId = setInterval(() => {
           setTime((prev) => prev - 1);
-        }, 1000); // Atualiza o cronômetro a cada segundo
+        }, 1000);
 
-        return () => clearInterval(intervalId); // Limpa o intervalo quando o componente desmonta ou o cronômetro reinicia
+        return () => clearInterval(intervalId);
       }
     } else {
-      // Se a resposta não for -1, pare de mostrar o cronômetro
-      setTime(15); // Reseta o cronômetro se a resposta for diferente de -1
+      setTime(15);
     }
   }, [dataNextQueue, time, refetechNextQueue]);
 

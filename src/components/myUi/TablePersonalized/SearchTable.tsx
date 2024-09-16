@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useContext } from "react";
-import { TableContext } from "./TableContext";
+import { TableContext } from "./Context/TableContext";
 
 export function SearchTable() {
   const { toogleFilter, inputText, setToogleFilter, setInputText } =

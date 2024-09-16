@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { ReactNode, useContext, useEffect } from "react";
-import { TableContext } from "../TablePersonalized/TableContext";
+import { TableContext } from "../Context/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { GetIconStatus, GetStatus } from "../TablePersonalized/Utils";
+import { GetIconStatus, GetStatus } from "../Utils";
 import { useCompleteSeparacao } from "@/services/Querys/Separacao";
 import { InternetContext } from "@/Contexts/InternetContext";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ export type DialogConfirmProps = {
   children?: ReactNode;
 };
 
-export function DialogConfirm({}: DialogConfirmProps) {
+export function DialogConfirmTable({}: DialogConfirmProps) {
   const navigate = useNavigate();
   const { itens, calls, idOperador, numpedido } = useContext(TableContext);
   const { isOnline } = useContext(InternetContext);

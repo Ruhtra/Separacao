@@ -9,7 +9,7 @@ import {
   useGetSeparacao,
 } from "@/services/Querys/Separacao";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TableProvider } from "@/components/myUi/TablePersonalized/TableContext";
+import { TableProvider } from "@/components/myUi/TablePersonalized/Context/TableContext";
 
 export function ConferirRoute() {
   const [searchParams, setSearchParams] = useSearchParams();

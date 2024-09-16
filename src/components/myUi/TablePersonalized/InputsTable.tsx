@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { TableContext } from "./TableContext";
+import { Call } from "./Context/TableContext";
 
 const FormSchema = z.object({
   qtd: z.number().min(0),
@@ -13,13 +12,11 @@ const FormSchema = z.object({
 
 export type InputsProps = {
   idseparacao_item: number;
-  index: number;
+  call: Call;
 };
 
-export function InputsTable({ idseparacao_item, index }: InputsProps) {
-  const { calls } = useContext(TableContext);
-
-  const { mutate, status } = calls[index];
+export function InputsTable({ idseparacao_item, call }: InputsProps) {
+  const { mutate, status } = call;
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -50,7 +47,7 @@ export function InputsTable({ idseparacao_item, index }: InputsProps) {
                   <Input
                     disabled={status == "pending"}
                     {...field}
-                    value={field.value === null ? 0 : field.value} // Se for null, exibe 0
+                    value={field.value === null ? 0 : field.value}
                     onChange={(e) => {
                       let inputValue = e.target.value;
 

@@ -5,6 +5,8 @@ import {
 } from "@/services/Querys/Items";
 import { UseMutationResult } from "@tanstack/react-query";
 import { createContext, ReactNode, useState } from "react";
+
+//DTO
 interface TableContextType {
   idOperador: string;
   numpedido: string;
@@ -16,11 +18,7 @@ interface TableContextType {
   filteredItems: GetListItemDtoResponse[];
   itens: GetListItemDtoResponse[];
 
-  calls: UseMutationResult<void, any, PostConfirmItemDtoRequest, unknown>[];
-  //   onSubmitConfirmItem: ((
-  //     idseparacaoItem: number,
-  //     index: number
-  //   ) => (data: z.infer<typeof FormSchema>) => void)[];
+  calls: Call[];
 }
 type TableProps = {
   children: ReactNode;
@@ -34,14 +32,21 @@ export const TableContext = createContext<TableContextType>(
   {} as TableContextType
 );
 
+export type Call = UseMutationResult<
+  void,
+  any,
+  PostConfirmItemDtoRequest,
+  unknown
+>;
+
+//MAIN
 export function TableProvider({
   itens,
   children,
   idOperador,
   numpedido,
 }: TableProps) {
-  console.log(numpedido);
-
+  //filtro
   const [inputText, setInputText] = useState<string>("");
   const [toogleFilter, setToogleFilter] = useState<boolean>(false);
 
@@ -52,20 +57,10 @@ export function TableProvider({
     return matchesCodigoFornecedor;
   });
 
+  //funções para confirmar
   const calls = itens.map(() => {
     return useConfirmItem(numpedido);
   });
-
-  //   const onSubmitConfirmItem = itens.map(() => {
-  //     return (idseparacaoItem: number, index: number) => {
-  //       return (data: z.infer<typeof FormSchema>) => {
-  //         calls[index].mutate({
-  //           idseparacao_item: idseparacaoItem,
-  //           qtd: data.qtd,
-  //         });
-  //       };
-  //     };
-  //   });
 
   return (
     <TableContext.Provider
@@ -79,7 +74,6 @@ export function TableProvider({
         itens: itens,
 
         calls,
-        // onSubmitConfirmItem,
         idOperador,
         numpedido,
       }}
