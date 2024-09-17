@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../Api";
+import { PathUrlOperador } from ".";
+import { api } from "@/services/Api";
 
 export type OperadorModel = {
   idOperador: number;
@@ -7,8 +8,6 @@ export type OperadorModel = {
   situacaoOperador?: string;
   lojas?: any; //remove any
 };
-
-const PathUrl = `/Operador`;
 
 export function useGetListOperador() {
   // Atenção para o modelo que pode estar errado
@@ -18,7 +17,7 @@ export function useGetListOperador() {
     queryKey: ["operadorList"],
     queryFn: async () => {
       const response = await api.get<OperadorModel[]>(
-        `${PathUrl}/GetListOperador`
+        `${PathUrlOperador}/GetListOperador`
       );
       return response.data;
     },

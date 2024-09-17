@@ -1,3 +1,4 @@
+import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 interface InternetContextType {
@@ -29,7 +30,8 @@ export function InternetProvider({ children }: InternetProps) {
   }, []);
 
   useEffect(() => {
-    if (isOnline == false) toast.info("Você foi desconectado da internet!");
+    if (isOnline == false)
+      ToastCloseButton({ description: "Você foi desconectado da internet!" });
   }, [isOnline]);
 
   return (

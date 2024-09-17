@@ -1,7 +1,8 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { api } from "../Api";
-import { toast } from "sonner";
-const PathUrl = `/Conferencia`;
+import { useQuery } from "@tanstack/react-query";
+import { PathUrlConferencia } from ".";
+import { api } from "@/services/Api";
+import { useEffect } from "react";
+import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type GetConferenciaDtoRequest = {
   numpedido?: string;
@@ -22,7 +23,7 @@ export function useGetConferencia(request: GetConferenciaDtoRequest) {
     queryKey: ["conferencia", request],
     queryFn: async () => {
       const response = await api.get<GetConferenciaDtoResponse>(
-        `${PathUrl}/GetConferencia`,
+        `${PathUrlConferencia}/GetConferencia`,
         {
           params: request,
         }
@@ -33,30 +34,21 @@ export function useGetConferencia(request: GetConferenciaDtoRequest) {
     enabled: false,
     retry: false,
   });
-  return query;
-}
 
-export type CompleteConferenciaRequestDto = {
-  numpedido: number;
-  IdOperador: number;
-};
-
-export function useCompleteConferencia() {
-  return useMutation({
-    mutationFn: async (request: CompleteConferenciaRequestDto) => {
-      await api.post(`${PathUrl}/PostComplete`, request);
-    },
-    retry: false,
-    onSuccess: (_data, _variables) => {},
-
-    onError: (error: any) => {
+  useEffect(() => {
+    if (query.error) {
+      const error = query.error as any;
       const statusCode = error?.response?.status;
-      // Mantém o status como "error" para mostrar o ícone de erro
-      if (statusCode == 200) {
-        console.log("enviado");
+
+      if (statusCode === 404) {
+        ToastCloseButton({ description: "Pedido Não encontrado!" });
       } else {
-        toast.error("ERRO! contate o suporte");
+        ToastCloseButton({
+          description: "Erro desconhecido, contate o suporte",
+        });
       }
-    },
-  });
+    }
+  }, [query.error]);
+
+  return query;
 }

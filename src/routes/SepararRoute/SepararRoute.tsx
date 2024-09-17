@@ -1,15 +1,18 @@
 import { useSearchParams } from "react-router-dom";
-import { TableMain } from "@/components/myUi/TablePersonalized/TableMain";
 import { Card, CardContent } from "@/components/ui/card";
-import { GetListItemDtoRequest, useGetListItem } from "@/services/Querys/Items";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useEffect, useState } from "react";
+import { useGetNextQueue } from "@/services/Querys/Separacao/GetNextQueue";
 import {
   GetSeparacaoDtoRequest,
-  useGetNextQueue,
   useGetSeparacao,
-} from "@/services/Querys/Separacao";
-import { Skeleton } from "@/components/ui/skeleton";
-import { TableProvider } from "@/components/myUi/TablePersonalized/Context/TableContext";
-import { useEffect, useState } from "react";
+} from "@/services/Querys/Separacao/GetSeparacao";
+import {
+  GetListItemDtoRequest,
+  useGetListItem,
+} from "@/services/Querys/Item/GetListItem";
+import { TableProvider } from "./TableSeparar/Context/TableContext";
+import { TableMain } from "./TableSeparar/TableMain";
 
 export function SepararRoute() {
   const [searchParams] = useSearchParams();

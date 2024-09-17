@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Call, TableContext } from "./Context/TableContext";
-import { useContext } from "react";
+import { Call } from "./Context/TableContext";
 
 const FormSchema = z.object({
   qtd: z.number().min(0),
@@ -17,8 +16,6 @@ export type InputsProps = {
 };
 
 export function InputsTable({ idseparacao_item, call }: InputsProps) {
-  const { idOperador } = useContext(TableContext);
-
   const { mutate, status } = call;
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -33,7 +30,6 @@ export function InputsTable({ idseparacao_item, call }: InputsProps) {
       mutate({
         idseparacao_item: idseparacao_item,
         qtd: data.qtd,
-        idoperador: idOperador,
       });
     };
   }
@@ -68,7 +64,7 @@ export function InputsTable({ idseparacao_item, call }: InputsProps) {
                       }
                     }}
                     type="number"
-                    className={`w-14 ${
+                    className={`w-[5em] ${
                       form.formState.errors.qtd ? "border-red-500" : ""
                     }`}
                   />

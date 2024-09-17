@@ -13,11 +13,11 @@ import { ReactNode, useContext, useEffect } from "react";
 import { TableContext } from "../Context/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../Utils";
-import { useCompleteSeparacao } from "@/services/Querys/Separacao";
 import { InternetContext } from "@/Contexts/InternetContext";
-import { toast } from "sonner";
 import { LoaderCircleIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
+import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 export type DialogConfirmProps = {
   children?: ReactNode;
 };
@@ -35,11 +35,14 @@ export function DialogConfirmTable({}: DialogConfirmProps) {
     );
 
     if (ErroExistente)
-      return toast.error(
-        "Não foi possível enviar pois nem todos os itens foram enviado para o servidor, aguarde até que todos estejam marcados como concluído"
-      );
+      return ToastCloseButton({
+        description:
+          "Não foi possível enviar pois nem todos os itens foram enviado para o servidor, aguarde até que todos estejam marcados como concluído",
+      });
     if (!isOnline)
-      return toast.error("Não é possível separar sem acesso a internet");
+      return ToastCloseButton({
+        description: "Não é possível separar sem acesso a internet",
+      });
 
     mutate({
       idOperador,

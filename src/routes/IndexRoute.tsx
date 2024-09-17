@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useGetListOperador } from "@/services/Querys/Operador";
 import { ArrowRightIcon } from "lucide-react";
+import { useGetListOperador } from "@/services/Querys/Operador/GetListOperador";
 
 const FormSchema = z.object({
   id: z

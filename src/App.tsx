@@ -21,7 +21,7 @@ export function App() {
     <InternetProvider>
       <div className="layout h-full flex-1">
         <Render />
-        <Toaster />
+        <Toaster position="top-left" />
       </div>
     </InternetProvider>
   );

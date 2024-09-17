@@ -1,8 +1,8 @@
+import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 import {
-  GetListItemDtoResponse,
-  PostConfirmItemDtoRequest,
-  useConfirmItem,
-} from "@/services/Querys/Items";
+  PostConfirmItemConferenciaDtoRequest,
+  useConfirmItemConferencia,
+} from "@/services/Querys/Item/PostConfirmItemConferencia";
 import { UseMutationResult } from "@tanstack/react-query";
 import { createContext, ReactNode, useState } from "react";
 
@@ -35,7 +35,7 @@ export const TableContext = createContext<TableContextType>(
 export type Call = UseMutationResult<
   void,
   any,
-  PostConfirmItemDtoRequest,
+  PostConfirmItemConferenciaDtoRequest,
   unknown
 >;
 
@@ -53,13 +53,13 @@ export function TableProvider({
   const filteredItems = itens.filter((i) => {
     const matchesCodigoFornecedor = i.codproduto.toString().includes(inputText);
     if (toogleFilter)
-      return matchesCodigoFornecedor && i.situacao_separacao_item === null;
+      return matchesCodigoFornecedor && i.qtd_conferencia === null;
     return matchesCodigoFornecedor;
   });
 
   //funções para confirmar
   const calls = itens.map(() => {
-    return useConfirmItem(numpedido);
+    return useConfirmItemConferencia(numpedido);
   });
 
   return (

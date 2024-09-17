@@ -1,16 +1,18 @@
 import { useSearchParams } from "react-router-dom";
-import { TableMain } from "@/components/myUi/TablePersonalizedConferencia/TableMain";
+import { TableMain } from "@/routes/ConfererirRoute/TableConferir/TableMain";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { GetListItemDtoRequest, useGetListItem } from "@/services/Querys/Items";
-import {
-  useGetConferencia,
-  // useCompleteConferencia,
-  GetConferenciaDtoRequest,
-} from "@/services/Querys/Conferir";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TableProvider } from "@/components/myUi/TablePersonalizedConferencia/Context/TableContext";
+import { TableProvider } from "@/routes/ConfererirRoute/TableConferir/Context/TableContext";
+import {
+  GetConferenciaDtoRequest,
+  useGetConferencia,
+} from "@/services/Querys/Conferir/GetConferencia";
+import {
+  GetListItemDtoRequest,
+  useGetListItem,
+} from "@/services/Querys/Item/GetListItem";
 
 export function ConferirRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
