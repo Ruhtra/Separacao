@@ -13,7 +13,11 @@ export function DataTable() {
             filteredItems.some((i) => i.codproduto === item.codproduto)
           )
           .map((item, index) => (
-            <RowTable item={item} call={calls[index]} />
+            <RowTable
+              key={item.idseparacao_item}
+              item={item}
+              call={calls[index]}
+            />
           ))}
       </div>
     </ScrollArea>

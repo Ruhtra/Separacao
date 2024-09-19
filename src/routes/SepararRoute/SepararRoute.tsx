@@ -43,7 +43,7 @@ export function SepararRoute() {
     data: itens,
     isLoading: isLoadingItens,
     refetch: refetchItens,
-  } = useGetListItem(requestItem);
+  } = useGetListItem(requestItem, true); // trocar para false em qualquer problma
 
   useEffect(() => {
     if (numpedido) {

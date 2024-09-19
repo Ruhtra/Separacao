@@ -22,7 +22,10 @@ export interface GetListItemDtoResponse {
   data_hora_separacao?: Date;
 }
 
-export function useGetListItem(request: GetListItemDtoRequest) {
+export function useGetListItem(
+  request: GetListItemDtoRequest,
+  enabled: boolean
+) {
   const query = useQuery<GetListItemDtoResponse[]>({
     queryKey: ["itemList", request.numpedido],
     queryFn: async () => {
@@ -45,7 +48,7 @@ export function useGetListItem(request: GetListItemDtoRequest) {
       return transformedData;
     },
     staleTime: 1000 * 60, // 1 minuto
-    enabled: false,
+    enabled: enabled,
     retry: 10 * 1000,
   });
 

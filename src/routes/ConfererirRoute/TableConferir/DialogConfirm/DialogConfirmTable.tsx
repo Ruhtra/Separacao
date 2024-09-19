@@ -83,6 +83,7 @@ export function DialogConfirmTable({}: DialogConfirmProps) {
             <div className="flex flex-col max-h-[70svh] ">
               {itens.map((e, i) => (
                 <div
+                  key={e.idseparacao_item}
                   className={`grid grid-cols-[2em_1fr] ${
                     GetStatus({
                       status: calls[i].status,

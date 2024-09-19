@@ -18,7 +18,10 @@ export type GetConferenciaDtoResponse = {
   qtd_itens?: number;
 };
 
-export function useGetConferencia(request: GetConferenciaDtoRequest) {
+export function useGetConferencia(
+  request: GetConferenciaDtoRequest,
+  enabled: boolean
+) {
   const query = useQuery<GetConferenciaDtoResponse>({
     queryKey: ["conferencia", request],
     queryFn: async () => {
@@ -31,7 +34,8 @@ export function useGetConferencia(request: GetConferenciaDtoRequest) {
       return response.data;
     },
     staleTime: 1000 * 60, // 1 minute
-    enabled: false,
+    enabled: enabled,
+
     retry: false,
   });
 
