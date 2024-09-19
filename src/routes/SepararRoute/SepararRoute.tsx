@@ -73,7 +73,7 @@ export function SepararRoute() {
   const showSkeleton = isLoading;
 
   return (
-    <div className="grid grid-rows-[3em_5em_calc(100%-5em-3em)] bg-yellow-200 h-full p-4">
+    <div className="grid grid-rows-[4em_5em_calc(100%-5em-4em)] bg-yellow-200 h-full p-4">
       <NavBar title="Separar" operador={idOperador} />
       {/* Cabeçalho com informações do pedido */}
       {showSkeleton ? (

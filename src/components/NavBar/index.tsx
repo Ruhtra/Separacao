@@ -14,6 +14,7 @@ export function NavBar({ title, operador }: NavbarProps) {
         <Link
           to={{
             pathname: "..",
+            search: window.location.search,
           }}
           relative="path"
           className="absolute top-[50%] left-2 translate-y-[-50%]"

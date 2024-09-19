@@ -13,14 +13,10 @@ function Render() {
         <Route path="/" element={<IndexRoute />} />
         <Route path="/separar" element={<SepararRoute />} />
         <Route path="/conferir" element={<ConferirRoute />} />
-        <Route
-          path="/BuscarConferencia"
-          element={<BuscarConferenciaRoute />}
-        ></Route>
-        <Route
-          path="/BuscarConferencia/Conferencia"
-          element={<ConferenciaRoute />}
-        />
+        <Route path="/find">
+          <Route path="" element={<BuscarConferenciaRoute />}></Route>
+          <Route path="Conferencia" element={<ConferenciaRoute />} />
+        </Route>
       </Routes>
     </>
   );

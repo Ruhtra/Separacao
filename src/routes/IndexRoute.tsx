@@ -104,7 +104,7 @@ export function IndexRoute() {
                   <Button
                     type="button"
                     className="min-w-28 flex justify-between items-center"
-                    onClick={form.handleSubmit(onSubmit("/conferir"))}
+                    onClick={form.handleSubmit(onSubmit("/find"))}
                   >
                     Conferir
                     <ArrowRightIcon className="w-5" />

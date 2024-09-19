@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar } from "@/components/NavBar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -6,13 +8,13 @@ import {
   GetConferenciaDtoRequest,
   useGetConferencia,
 } from "@/services/Querys/Conferir/GetConferencia";
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function BuscarConferenciaRoute() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const idOperador = searchParams.get("idoperador");
+  const [shouldFetch, setShouldFetch] = useState(false); // Controla o refetch manual
+
   if (!idOperador) return <h1>IdOperador não encontrado</h1>;
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,25 +26,27 @@ export function BuscarConferenciaRoute() {
     numpedido: searchParams.get("numpedido") || "",
   };
 
+  // Habilita a query apenas quando `shouldFetch` for true
   const {
     data: _data,
     isLoading,
-    refetch,
     status,
-  } = useGetConferencia(request, false);
-  const handleSearchClick = async () => {
-    await refetch();
+  } = useGetConferencia(request, shouldFetch);
+
+  const handleSearchClick = () => {
+    setShouldFetch(true); // Habilita o fetch
   };
 
   useEffect(() => {
-    if (status == "success")
-      //   TO-DO remove numpedido for here
+    if (status === "success" && shouldFetch) {
+      setShouldFetch(false); // Desabilita o fetch após sucesso
       navigate(
         `./conferencia?idoperador=${idOperador}&numpedido=${
           searchParams.get("numpedido") || ""
         }`
       );
-  }, [status]);
+    }
+  }, [status, shouldFetch]);
 
   if (isLoading) return <h1>Loading</h1>;
 

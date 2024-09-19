@@ -3,8 +3,8 @@ import { BuscarConferenciaContext } from "./BuscarContext";
 import { NavBar } from "@/components/NavBar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { TableProvider } from "../ConfererirRoute/TableConferir/Context/TableContext";
-import { TableMain } from "../ConfererirRoute/TableConferir/TableMain";
+import { TableProvider } from "./TableConferir/Context/TableContext";
+import { TableMain } from "./TableConferir/TableMain";
 export function BuscarScreen() {
   const { isShowSkeleton, idOperador, dataConferencia, dataItens, numpedido } =
     useContext(BuscarConferenciaContext);
