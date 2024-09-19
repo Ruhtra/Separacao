@@ -8,17 +8,16 @@ import {
   DialogHeader,
   DialogDescription,
 } from "@/components/ui/dialog";
-
 import { ReactNode, useContext, useEffect } from "react";
 import { TableContext } from "../Context/TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../Utils";
 import { InternetContext } from "@/Contexts/InternetContext";
-import { toast } from "sonner";
 import { LoaderCircleIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
 import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
+import { useCompleteConferencia } from "@/services/Querys/Conferir/CompleteConferencia";
+
 export type DialogConfirmProps = {
   children?: ReactNode;
 };
@@ -28,7 +27,7 @@ export function DialogConfirmTable({}: DialogConfirmProps) {
   const { itens, calls, idOperador, numpedido } = useContext(TableContext);
   const { isOnline } = useContext(InternetContext);
 
-  const { status, mutate } = useCompleteSeparacao();
+  const { status, mutate } = useCompleteConferencia();
 
   const handleFinalizar = () => {
     const ErroExistente = calls.some(

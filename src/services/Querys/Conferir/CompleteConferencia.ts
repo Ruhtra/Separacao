@@ -1,12 +1,11 @@
 import { api } from "@/services/Api";
 import { useMutation } from "@tanstack/react-query";
 import { PathUrlConferencia } from ".";
-import { toast } from "sonner";
 import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type CompleteConferenciaRequestDto = {
-  numpedido: number;
-  IdOperador: number;
+  numpedido: string;
+  idOperador: string;
 };
 
 export function useCompleteConferencia() {
