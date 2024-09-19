@@ -13,6 +13,7 @@ import {
   GetListItemDtoRequest,
   useGetListItem,
 } from "@/services/Querys/Item/GetListItem";
+import { NavBar } from "@/components/NavBar";
 
 export function ConferirRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,7 +43,8 @@ export function ConferirRoute() {
   };
 
   return (
-    <div className="grid grid-rows-[5em_6em_calc(100%-11em)] bg-yellow-200 h-full p-4">
+    <div className="grid grid-rows-[3em_5em_6em_calc(100%-5em-6em-3em)] bg-yellow-200 h-full p-4">
+      <NavBar title="Conferir" operador={idOperador} />
       <div>
         <Card className="">
           <CardContent className="flex p-4 gap-2 justify-center items-center">
