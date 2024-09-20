@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Call, TableContext } from "./Context/TableContext";
+import { Call, TableContext } from "./TableContext";
 import { useContext } from "react";
 import {
   Tooltip,
@@ -22,7 +22,7 @@ export type InputsProps = {
   call: Call;
 };
 
-export function InputsTable({ idseparacao_item, call }: InputsProps) {
+export function TableForm({ idseparacao_item, call }: InputsProps) {
   const { idOperador } = useContext(TableContext);
 
   const { mutate, status } = call;

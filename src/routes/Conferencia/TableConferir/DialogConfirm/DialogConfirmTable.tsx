@@ -9,7 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ReactNode, useContext, useEffect } from "react";
-import { TableContext } from "../Context/TableContext";
+import { TableContext } from "../TableContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GetIconStatus, GetStatus } from "../Utils";
 import { InternetContext } from "@/Contexts/InternetContext";

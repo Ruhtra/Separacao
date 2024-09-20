@@ -3,11 +3,11 @@ import { BuscarConferenciaContext } from "./BuscarContext";
 import { NavBar } from "@/components/NavBar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { TableProvider } from "./TableConferir/Context/TableContext";
-import { TableMain } from "./TableConferir/TableMain";
+import { TableRoot } from "./TableConferir/TableRoot";
 export function BuscarScreen() {
-  const { isShowSkeleton, idOperador, dataConferencia, dataItens, numpedido } =
-    useContext(BuscarConferenciaContext);
+  const { isShowSkeleton, idOperador, dataConferencia } = useContext(
+    BuscarConferenciaContext
+  );
 
   return (
     <div className="grid grid-rows-[4em_6em_calc(100%-5em-4em-1em)] bg-yellow-200 h-full p-4">
@@ -42,19 +42,7 @@ export function BuscarScreen() {
           </Card>
           <Card className="h-full">
             <CardContent className="h-full p-2 w-full">
-              {dataConferencia && dataItens && dataItens?.length > 0 ? (
-                <TableProvider
-                  itens={dataItens}
-                  idOperador={idOperador}
-                  numpedido={numpedido}
-                >
-                  <TableMain />
-                </TableProvider>
-              ) : (
-                <div className="h-full flex justify-center items-center">
-                  <div>Nenhum item encontrado</div>
-                </div>
-              )}
+              <TableRoot />
             </CardContent>
           </Card>
         </>

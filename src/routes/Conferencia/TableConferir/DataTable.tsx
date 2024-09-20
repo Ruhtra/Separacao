@@ -1,7 +1,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useContext } from "react";
-import { TableContext } from "./Context/TableContext";
-import { RowTable } from "./RowTable";
+import { TableContext } from "./TableContext";
+import { TableRow } from "./TableRow";
 
 export function DataTable() {
   const { filteredItems, itens, calls } = useContext(TableContext);
@@ -13,7 +13,7 @@ export function DataTable() {
             filteredItems.some((i) => i.codproduto === item.codproduto)
           )
           .map((item, index) => (
-            <RowTable
+            <TableRow
               key={item.idseparacao_item}
               item={item}
               call={calls[index]}

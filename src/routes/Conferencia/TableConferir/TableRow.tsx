@@ -1,6 +1,6 @@
-import { InputsTable } from "./InputsTable";
+import { TableForm } from "./TableForm";
 import { GetIconStatus, GetStatus } from "./Utils";
-import { Call } from "./Context/TableContext";
+import { Call } from "./TableContext";
 import { Badge } from "@/components/ui/badge";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 
@@ -9,7 +9,7 @@ export type RowTableProps = {
   call: Call;
 };
 
-export function RowTable({ item, call }: RowTableProps) {
+export function TableRow({ item, call }: RowTableProps) {
   // const isSeparado = item.situacao_separacao_item != null;
   const borderError =
     GetStatus({
@@ -38,7 +38,7 @@ export function RowTable({ item, call }: RowTableProps) {
       <div className="col-span-2 flex items-center">{item.codproduto}</div>
       <div className="flex items-center justify-center">3662110000</div>
       <div className="flex col-span-2 gap-2 relative items-center">
-        <InputsTable idseparacao_item={item.idseparacao_item} call={call} />
+        <TableForm idseparacao_item={item.idseparacao_item} call={call} />
       </div>
     </div>
   );

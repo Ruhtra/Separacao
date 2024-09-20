@@ -1,9 +1,9 @@
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useContext } from "react";
-import { TableContext } from "./Context/TableContext";
+import { TableContext } from "./TableContext";
 
-export function SearchTable() {
+export function TableSearch() {
   const { toogleFilter, inputText, setToogleFilter, setInputText } =
     useContext(TableContext);
 
@@ -26,7 +26,7 @@ export function SearchTable() {
             setToogleFilter(!toogleFilter);
           }}
         />
-        Apenas em separação
+        Apenas em conferencia
       </label>
     </div>
   );
