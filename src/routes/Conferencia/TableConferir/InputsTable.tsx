@@ -6,9 +6,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Call, TableContext } from "./Context/TableContext";
 import { useContext } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const FormSchema = z.object({
-  qtd: z.number().min(0),
+  qtd: z.number().min(0, "Quantidade deve ser maior ou igual a 0"),
 });
 
 export type InputsProps = {
@@ -47,38 +53,49 @@ export function InputsTable({ idseparacao_item, call }: InputsProps) {
             name="qtd"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Input
-                    disabled={status == "pending"}
-                    {...field}
-                    value={field.value === null ? 0 : field.value}
-                    onChange={(e) => {
-                      let inputValue = e.target.value;
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <FormControl>
+                        <Input
+                          disabled={status === "pending"}
+                          {...field}
+                          value={field.value === null ? 0 : field.value}
+                          onChange={(e) => {
+                            let inputValue = e.target.value;
 
-                      if (field.value === 0 || field.value == null) {
-                        inputValue = inputValue.replace("0", "");
-                        field.onChange(
-                          e.target.value === "" ? 0 : Number(inputValue)
-                        );
-                        e.target.value = inputValue;
-                      } else {
-                        field.onChange(
-                          e.target.value === "" ? 0 : Number(inputValue)
-                        );
-                      }
-                    }}
-                    type="number"
-                    className={`w-[5em] ${
-                      form.formState.errors.qtd ? "border-red-500" : ""
-                    }`}
-                  />
-                </FormControl>
+                            if (field.value === 0 || field.value == null) {
+                              inputValue = inputValue.replace("0", "");
+                              field.onChange(
+                                e.target.value === "" ? 0 : Number(inputValue)
+                              );
+                              e.target.value = inputValue;
+                            } else {
+                              field.onChange(
+                                e.target.value === "" ? 0 : Number(inputValue)
+                              );
+                            }
+                          }}
+                          type="number"
+                          className={`w-[5em] ${
+                            form.formState.errors.qtd ? "border-red-500" : ""
+                          }`}
+                        />
+                      </FormControl>
+                    </TooltipTrigger>
+                    {form.formState.errors.qtd && (
+                      <TooltipContent side="top">
+                        <p>{form.formState.errors.qtd.message}</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
               </FormItem>
             )}
           />
           <Button
             onClick={form.handleSubmit(onSubmitConfirmItem())}
-            disabled={status == "pending"}
+            disabled={status === "pending"}
             className="pl-0 pr-0 w-full"
           >
             Separar
