@@ -36,9 +36,13 @@ export function TableRow({ item, call }: RowTableProps) {
         )}
       </div>
       <div className="col-span-2 flex items-center">{item.codproduto}</div>
-      <div className="flex items-center justify-center">3662110000</div>
+      <div className="flex items-center justify-center">{item.embalagem}</div>
       <div className="flex col-span-2 gap-2 relative items-center">
-        <TableForm idseparacao_item={item.idseparacao_item} call={call} />
+        <TableForm
+          idseparacao_item={item.idseparacao_item}
+          qtdPedido={item.qtd}
+          call={call}
+        />
       </div>
     </div>
   );
