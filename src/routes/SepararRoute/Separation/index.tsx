@@ -1,10 +1,16 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetSeparacao } from "@/services/Querys/Separacao/GetSeparacao";
 import { useGetListItem } from "@/services/Querys/Item/GetListItem";
+import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
+import { SeparationProvider, useSeparationContext } from "./SeparationContext";
+import { TopSection } from "./TopSection";
 import { ItemList } from "./ItemList";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { FooterSection } from "./FooterSection";
+import { ConfirmationDialog } from "./ConfirmationDialog";
+import { LoadingState } from "./LoadingState";
+import { ErrorState } from "./ErrorState";
+import { NoItemsState } from "./NoItemsState";
 
 export default function SeparationLayout() {
   const { orderNumber } = useParams<{ orderNumber: string }>();
@@ -13,87 +19,78 @@ export default function SeparationLayout() {
     { numpedido: orderNumber },
     !!orderNumber
   );
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const completeSeparacao = useCompleteSeparacao();
 
-  if (separacaoQuery.isLoading || itemListQuery.isLoading) {
-    return <div className="p-4">Carregando...</div>;
-  }
+  if (separacaoQuery.isLoading || itemListQuery.isLoading)
+    return <LoadingState />;
+  if (separacaoQuery.isError || itemListQuery.isError) return <ErrorState />;
+  if (!separacaoQuery.data) return <NoItemsState orderNumber={orderNumber} />;
+  if (!itemListQuery.data || itemListQuery.data.length === 0)
+    return <NoItemsState orderNumber={orderNumber} />;
 
-  if (separacaoQuery.isError || itemListQuery.isError) {
-    return (
-      <Alert variant="destructive" className="m-4">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Erro</AlertTitle>
-        <AlertDescription>
-          Ocorreu um erro ao carregar os dados. Por favor, tente novamente.
-        </AlertDescription>
-      </Alert>
-    );
-  }
+  return (
+    <SeparationProvider initialItems={itemListQuery.data}>
+      <SeparationLayoutContent
+        orderNumber={orderNumber || ""}
+        clientName={separacaoQuery.data.cliente || ""}
+        isDialogOpen={isDialogOpen}
+        setIsDialogOpen={setIsDialogOpen}
+        completeSeparacao={completeSeparacao}
+      />
+    </SeparationProvider>
+  );
+}
 
-  if (!separacaoQuery.data) {
-    return (
-      <Alert variant="destructive" className="m-4">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Pedido não encontrado</AlertTitle>
-        <AlertDescription>
-          Não foi possível encontrar o pedido com o número {orderNumber}.
-        </AlertDescription>
-      </Alert>
-    );
-  }
+function SeparationLayoutContent({
+  orderNumber,
+  clientName,
+  isDialogOpen,
+  setIsDialogOpen,
+  completeSeparacao,
+}: {
+  orderNumber: string;
+  clientName: string;
+  isDialogOpen: boolean;
+  setIsDialogOpen: (isOpen: boolean) => void;
+  completeSeparacao: ReturnType<typeof useCompleteSeparacao>;
+}) {
+  const { items, canConfirmAll } = useSeparationContext();
 
-  if (!itemListQuery.data || itemListQuery.data.length === 0) {
-    return (
-      <Alert variant={"warn"} className="m-4">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Nenhum item encontrado</AlertTitle>
-        <AlertDescription>
-          Não há itens para separação neste pedido.
-        </AlertDescription>
-      </Alert>
-    );
-  }
+  const handleConfirmAll = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCompleteOrder = async () => {
+    try {
+      await completeSeparacao.mutateAsync({
+        numpedido: orderNumber,
+        idOperador: "1", // Assuming you have the operator ID available
+      });
+      setIsDialogOpen(false);
+    } catch (error) {
+      console.error("Failed to complete order:", error);
+    }
+  };
 
   return (
     <>
-      {/* <Navbar title="yes" /> */}
       <div className="flex flex-col h-full">
-        {/* Top Section */}
-        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-          <div className="container mx-auto p-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <div>
-                <h2 className="text-lg font-semibold truncate max-w-[200px] sm:max-w-none">
-                  Client: {separacaoQuery.data.cliente}
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Order: {orderNumber}
-                </p>
-              </div>
-              <p className="text-sm text-muted-foreground mt-2 sm:mt-0">
-                {new Date().toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Scrollable Items Section */}
-        <ItemList numpedido={orderNumber || ""} items={itemListQuery.data} />
-
-        {/* Footer Section */}
-        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t">
-          <div className="container mx-auto p-4">
-            <div className="flex justify-between items-center">
-              <p className="text-sm text-muted-foreground">
-                Total Items: {itemListQuery.data.length}
-              </p>
-              <Button type="submit" onClick={() => console.log()}>
-                Confirm All
-              </Button>
-            </div>
-          </div>
-        </div>
+        <TopSection clientName={clientName} orderNumber={orderNumber} />
+        <ItemList numpedido={orderNumber} />
+        <FooterSection
+          itemCount={items.length}
+          canConfirmAll={canConfirmAll}
+          onConfirmAll={handleConfirmAll}
+        />
       </div>
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={handleCompleteOrder}
+        canConfirmAll={canConfirmAll}
+        isPending={completeSeparacao.isPending}
+      />
     </>
   );
 }

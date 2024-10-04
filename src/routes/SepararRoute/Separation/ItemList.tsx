@@ -1,13 +1,14 @@
-import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ItemCard } from "./ItemCard";
+import { useSeparationContext } from "./SeparationContext";
 
 interface ItemListProps {
-  items: GetListItemDtoResponse[];
   numpedido: string;
 }
 
-export function ItemList({ items, numpedido }: ItemListProps) {
+export function ItemList({ numpedido }: ItemListProps) {
+  const { items } = useSeparationContext();
+
   return (
     <ScrollArea className="h-full px-4 py-6">
       <div className="container mx-auto space-y-4">

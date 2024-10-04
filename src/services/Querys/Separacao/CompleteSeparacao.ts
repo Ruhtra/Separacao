@@ -1,7 +1,7 @@
 import { api } from "@/services/Api";
 import { useMutation } from "@tanstack/react-query";
 import { PathUrlSeparacao } from ".";
-import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
+// import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type CompleteSeparacaoDtoRequest = {
   numpedido?: string;
@@ -22,9 +22,9 @@ export function useCompleteSeparacao() {
       if (statusCode == 200) {
         console.log("enviado");
       } else {
-        ToastCloseButton({
-          description: "Erro desconhecido, contate o suporte",
-        });
+        // ToastCloseButton({
+        //   description: "Erro desconhecido, contate o suporte",
+        // });
       }
     },
   });
