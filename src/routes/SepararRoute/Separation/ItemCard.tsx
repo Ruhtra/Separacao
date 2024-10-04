@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
-import { useState } from "react";
+import { usePostConfirmItem } from "@/services/Querys/Item/PostConfirmItem";
 
 const createItemSchema = (maxQuantity: number) =>
   z.object({
@@ -25,18 +25,11 @@ const createItemSchema = (maxQuantity: number) =>
 
 interface ItemCardProps {
   item: GetListItemDtoResponse;
-  onConfirm: (item: GetListItemDtoResponse, quantity: number) => void;
-  confirmedQuantity?: number;
+  numpedido: string;
 }
 
-export function ItemCard({
-  item,
-  onConfirm,
-  confirmedQuantity,
-}: ItemCardProps) {
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "error" | "success"
-  >("idle");
+export function ItemCard({ item, numpedido }: ItemCardProps) {
+  const { mutateAsync, status } = usePostConfirmItem(numpedido);
 
   const form = useForm<z.infer<ReturnType<typeof createItemSchema>>>({
     resolver: zodResolver(createItemSchema(item.qtd)),
@@ -48,19 +41,15 @@ export function ItemCard({
   const handleSubmit = async (
     values: z.infer<ReturnType<typeof createItemSchema>>
   ) => {
-    setStatus("loading");
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulating API call
-      onConfirm(item, values.quantity);
-      setStatus("success");
-    } catch (error) {
-      setStatus("error");
-    }
+    await mutateAsync({
+      qtd: values.quantity,
+      idseparacao_item: item.idseparacao_item,
+    });
   };
 
   const StatusIcon = () => {
     switch (status) {
-      case "loading":
+      case "pending":
         return <Loader2 className="h-5 w-5 animate-spin text-blue-500" />;
       case "error":
         return <AlertCircle className="h-5 w-5 text-red-500" />;
@@ -78,7 +67,8 @@ export function ItemCard({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="w-full sm:w-auto">
               <h3 className="flex  items-center gap-1 font-semibold text-sm sm:text-base mb-2">
-                <StatusIcon /> {item.descricao_item}
+                <StatusIcon />
+                <p className="truncate">{item.descricao_item}</p>
               </h3>
               <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
                 <span>ID: {item.idseparacao_item}</span>
@@ -92,9 +82,9 @@ export function ItemCard({
                 className="w-full sm:w-auto mt-4 sm:mt-0"
               >
                 <div className="flex flex-col space-y-2">
-                  {confirmedQuantity !== undefined && (
+                  {item.qtd !== undefined && (
                     <p className="text-xs sm:text-sm text-green-600 order-first sm:order-none sm:text-right">
-                      Confirmed quantity: {confirmedQuantity}
+                      Confirmed quantity: {item.qtd_separada}
                     </p>
                   )}
                   <FormField
@@ -109,12 +99,33 @@ export function ItemCard({
                               type="number"
                               placeholder="Qty"
                               className="w-full"
-                              onChange={(e) =>
-                                field.onChange(Number(e.target.value))
-                              }
+                              onChange={(e) => {
+                                let inputValue = e.target.value;
+
+                                if (field.value === 0 || field.value == null) {
+                                  inputValue = inputValue.replace("0", "");
+                                  field.onChange(
+                                    e.target.value === ""
+                                      ? 0
+                                      : Number(inputValue)
+                                  );
+                                  e.target.value = inputValue;
+                                } else {
+                                  field.onChange(
+                                    e.target.value === ""
+                                      ? 0
+                                      : Number(inputValue)
+                                  );
+                                }
+                              }}
+                              disabled={status == "pending"}
                             />
                           </FormControl>
-                          <Button type="submit" className="w-full">
+                          <Button
+                            type="submit"
+                            className="w-full"
+                            disabled={status == "pending"}
+                          >
                             Confirm
                           </Button>
                         </div>

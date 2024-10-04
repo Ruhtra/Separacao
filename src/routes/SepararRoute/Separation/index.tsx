@@ -78,7 +78,7 @@ export default function SeparationLayout() {
         </div>
 
         {/* Scrollable Items Section */}
-        <ItemList items={itemListQuery.data} />
+        <ItemList numpedido={orderNumber || ""} items={itemListQuery.data} />
 
         {/* Footer Section */}
         <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t">
