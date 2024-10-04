@@ -4,7 +4,7 @@ import { useGetListItem } from "@/services/Querys/Item/GetListItem";
 import ItemList from "./ItemList";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
-import { Navbar } from "@/components/NavBar";
+import { Button } from "@/components/ui/button";
 
 export default function SeparationLayout() {
   const { orderNumber } = useParams<{ orderNumber: string }>();
@@ -56,11 +56,43 @@ export default function SeparationLayout() {
 
   return (
     <>
-      <Navbar title="separar" />
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Pedido #{orderNumber}</h1>
-        <p className="mb-4">Cliente: {separacaoQuery.data.cliente}</p>
+      {/* <Navbar title="yes" /> */}
+      <div className="flex flex-col h-full">
+        {/* Top Section */}
+        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+          <div className="container mx-auto p-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <div>
+                <h2 className="text-lg font-semibold truncate max-w-[200px] sm:max-w-none">
+                  Client: {separacaoQuery.data.cliente}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Order: {orderNumber}
+                </p>
+              </div>
+              <p className="text-sm text-muted-foreground mt-2 sm:mt-0">
+                {new Date().toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Scrollable Items Section */}
         <ItemList items={itemListQuery.data} />
+
+        {/* Footer Section */}
+        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t">
+          <div className="container mx-auto p-4">
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-muted-foreground">
+                Total Items: {itemListQuery.data.length}
+              </p>
+              <Button type="submit" onClick={() => console.log()}>
+                Confirm All
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

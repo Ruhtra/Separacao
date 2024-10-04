@@ -23,7 +23,7 @@ export function Navbar({ title }: NavbarProps) {
   };
 
   return (
-    <nav className="flex items-center justify-between px-4 py-3 bg-white shadow-md">
+    <nav className="flex items-center h-14 justify-between px-4 py-3 bg-white shadow-md">
       <Button
         variant="ghost"
         size="icon"

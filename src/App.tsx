@@ -4,8 +4,9 @@ import { Toaster } from "./components/ui/sonner";
 import { DashboardRoute } from "./routes/DashBoardRoute";
 import { ConferirRoute } from "./routes/ConferirRoute";
 import { ShowRoute } from "./routes/ShowRoute";
-import SearchOrder from "./routes/SepararRoute/SearchOrder";
-import SeparationLayout from "./routes/SepararRoute/SeparationLayout";
+import Teste from "./routes/Teste";
+import SearchOrder from "./routes/SepararRoute/SarchOrder";
+import SeparationLayout from "./routes/SepararRoute/Separation";
 function Render() {
   return (
     <>
@@ -19,6 +20,7 @@ function Render() {
             <Route path=":orderNumber" element={<SeparationLayout />} />
           </Route>
           <Route path="show" element={<ShowRoute />} />
+          <Route path="teste" element={<Teste />} />
         </Route>
       </Routes>
     </>
