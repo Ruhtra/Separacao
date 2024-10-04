@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/card";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuthLogin } from "@/services/Querys/Auth/LoginAuth";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 export function LoginRoute() {
+  const { mutate: mutateAsync } = useAuthLogin();
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -45,8 +47,13 @@ export function LoginRoute() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const a = await mutateAsync({
+      email: values.email,
+      password: values.password,
+    });
+    console.log(a);
+
     setError("Invalid email or password. Please try again.");
   }
 
