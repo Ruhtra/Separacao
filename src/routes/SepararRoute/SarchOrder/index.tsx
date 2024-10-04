@@ -12,13 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { orderNumberSchema } from "./validationSchema";
-import { Navbar } from "@/components/NavBar";
 
 type FormValues = {
   orderNumber: string;
 };
 
-export default function SearchOrder() {
+export type SearchOrderProps = {
+  to: string;
+};
+export function SearchOrder({ to }: SearchOrderProps) {
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(orderNumberSchema),
@@ -28,12 +30,11 @@ export default function SearchOrder() {
   });
 
   const onSubmit = (data: FormValues) => {
-    navigate(`/separate/${data.orderNumber}`);
+    navigate(`${to}/${data.orderNumber}`);
   };
 
   return (
     <>
-      <Navbar title="Buscar Pedido" />
       <div className="container mx-auto p-4 max-w-md">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

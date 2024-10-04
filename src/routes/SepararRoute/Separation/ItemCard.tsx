@@ -80,8 +80,11 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
               >
                 <div className="flex flex-col space-y-2">
                   {item.qtd !== undefined && (
-                    <p className="text-xs sm:text-sm text-green-600 order-first sm:order-none sm:text-right">
-                      Confirmed quantity: {item.qtd_separada}
+                    <p className="text-xs sm:text-sm  order-first sm:order-none sm:text-right">
+                      <span className="text-green-600">
+                        {item.qtd_separada}
+                      </span>{" "}
+                      / {item.qtd}
                     </p>
                   )}
                   <FormField

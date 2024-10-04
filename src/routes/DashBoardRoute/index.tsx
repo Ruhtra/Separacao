@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Layers, CheckSquare, Eye, Beaker } from "lucide-react";
+import { Layers, CheckSquare, Eye, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export function DashboardRoute() {
@@ -16,7 +16,7 @@ export function DashboardRoute() {
     { name: "Separar", path: "/separate", icon: Layers },
     { name: "Conferir", path: "/conferir", icon: CheckSquare },
     { name: "Visualizar", path: "/show", icon: Eye },
-    { name: "Teste", path: "/teste", icon: Beaker },
+    { name: "Logout", path: "/logout", icon: LogOut },
   ];
 
   return (

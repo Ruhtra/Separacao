@@ -34,7 +34,7 @@ const formSchema = z.object({
   }),
 });
 
-export function IndexRoute() {
+export function LoginRoute() {
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
