@@ -1,4 +1,4 @@
-import { useSeparationContext } from "./SeparationContext";
+import { useSeparationContext } from "./CheckContext";
 import {
   Dialog,
   DialogContent,

@@ -1,7 +1,7 @@
 import { api } from "@/services/Api";
 import { useMutation } from "@tanstack/react-query";
 import { PathUrlConferencia } from ".";
-import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
+// import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type CompleteConferenciaRequestDto = {
   numpedido: string;
@@ -22,9 +22,9 @@ export function useCompleteConferencia() {
       if (statusCode == 200) {
         console.log("enviado");
       } else {
-        ToastCloseButton({
-          description: "Erro desconhecido, contate o suporte",
-        });
+        // ToastCloseButton({
+        //   description: "Erro desconhecido, contate o suporte",
+        // });
       }
     },
   });

@@ -2,13 +2,13 @@ import { Route, Routes } from "react-router-dom";
 import { LoginRoute } from "./routes/LogInRoute";
 import { Toaster } from "./components/ui/sonner";
 import { DashboardRoute } from "./routes/DashBoardRoute";
-import { ConferirRoute } from "./routes/ConferirRoute";
 import { ShowRoute } from "./routes/ShowRoute";
-import Teste from "./routes/Teste";
-import { SearchOrder } from "./routes/SepararRoute/SarchOrder";
-import SeparationLayout from "./routes/SepararRoute/Separation";
-import { SeparateLayout } from "./routes/SepararRoute/Separation/SeparateLayout";
-import { ShowLayout } from "./routes/ShowRoute/ShowLayout";
+import { SearchOrderRoute } from "./routes/SarchOrderRoute";
+import { CheckRoute } from "./routes/CheckRoute";
+import { LayoutCheck } from "./routes/CheckRoute/LayoutCheck";
+import { ShowLayout } from "./routes/ShowRoute/LayoutShow";
+import { SeparateRoute } from "./routes/SeparateRoute";
+import { LogoutRoute } from "./routes/LogoutRoute/Index";
 function Render() {
   return (
     <>
@@ -16,16 +16,16 @@ function Render() {
         <Route path="/login" element={<LoginRoute />} />
         <Route path="/">
           <Route path="" element={<DashboardRoute />} />
-          <Route path="conferir" element={<ConferirRoute />} />
-          <Route path="separate" element={<SeparateLayout />}>
-            <Route index element={<SearchOrder to="/separate" />} />
-            <Route path=":orderNumber" element={<SeparationLayout />} />
+          <Route path="separate" element={<SeparateRoute />} />
+          <Route path="check" element={<LayoutCheck />}>
+            <Route index element={<SearchOrderRoute />} />
+            <Route path=":orderNumber" element={<CheckRoute />} />
           </Route>
           <Route path="show" element={<ShowLayout />}>
-            <Route index element={<SearchOrder to="/show" />} />
+            <Route index element={<SearchOrderRoute />} />
             <Route path=":orderNumber" element={<ShowRoute />} />
           </Route>
-          <Route path="teste" element={<Teste />} />
+          <Route path="logout" element={<LogoutRoute />} />
         </Route>
       </Routes>
     </>

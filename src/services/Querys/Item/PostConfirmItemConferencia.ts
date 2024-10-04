@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { PathUrlItem } from ".";
 import { queryClient } from "@/services/QueryClient";
 import { GetListItemDtoResponse } from "./GetListItem";
-import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
+// import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export interface PostConfirmItemConferenciaDtoRequest {
   idseparacao_item: number;
@@ -44,9 +44,9 @@ export function useConfirmItemConferencia(numpedido: string) {
       if (statusCode == 200) {
         console.log("enviado");
       } else {
-        ToastCloseButton({
-          description: "Erro desconhecido, contate o suporte",
-        });
+        // ToastCloseButton({
+        //   description: "Erro desconhecido, contate o suporte",
+        // });
       }
     },
   });

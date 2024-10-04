@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,7 +12,7 @@ import { Link } from "react-router-dom";
 export function DashboardRoute() {
   const routes = [
     { name: "Separar", path: "/separate", icon: Layers },
-    { name: "Conferir", path: "/conferir", icon: CheckSquare },
+    { name: "Conferir", path: "/check", icon: CheckSquare },
     { name: "Visualizar", path: "/show", icon: Eye },
     { name: "Logout", path: "/logout", icon: LogOut },
   ];
@@ -34,14 +32,11 @@ export function DashboardRoute() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {routes.map((route) => (
               <Link
+                key={route.path}
                 to={route.path}
                 className="h-24 text-lg justify-start space-x-4"
               >
-                <Button
-                  key={route.path}
-                  variant="outline"
-                  className="h-full w-full"
-                >
+                <Button variant="outline" className="h-full w-full">
                   <route.icon className="w-6 h-6" />
                   <span>{route.name}</span>
                 </Button>

@@ -1,9 +1,9 @@
 import { Navbar } from "@/components/NavBar";
 
-export function ConferirRoute() {
+export function SeparateRoute() {
   return (
     <>
-      <Navbar title="Conferência" />
+      <Navbar title="Separar" />
     </>
   );
 }

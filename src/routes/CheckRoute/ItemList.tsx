@@ -1,6 +1,6 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ItemCard } from "./ItemCard";
-import { useSeparationContext } from "./SeparationContext";
+import { useSeparationContext } from "./CheckContext";
 
 interface ItemListProps {
   numpedido: string;

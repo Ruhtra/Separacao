@@ -51,7 +51,7 @@ export function LoginRoute() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-[100svh] flex items-center justify-center bg-gray-100">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">
@@ -71,7 +71,11 @@ export function LoginRoute() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your email" {...field} />
+                      <Input
+                        placeholder="Enter your email"
+                        {...field}
+                        autoComplete="username"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -88,6 +92,7 @@ export function LoginRoute() {
                         type="password"
                         placeholder="Enter your password"
                         {...field}
+                        autoComplete="current-password"
                       />
                     </FormControl>
                     <FormMessage />

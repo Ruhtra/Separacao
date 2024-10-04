@@ -17,10 +17,7 @@ type FormValues = {
   orderNumber: string;
 };
 
-export type SearchOrderProps = {
-  to: string;
-};
-export function SearchOrder({ to }: SearchOrderProps) {
+export function SearchOrderRoute() {
   const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(orderNumberSchema),
@@ -30,7 +27,7 @@ export function SearchOrder({ to }: SearchOrderProps) {
   });
 
   const onSubmit = (data: FormValues) => {
-    navigate(`${to}/${data.orderNumber}`);
+    navigate(`./${data.orderNumber}`);
   };
 
   return (

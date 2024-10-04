@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PathUrlConferencia } from ".";
 import { api } from "@/services/Api";
 import { useEffect } from "react";
-import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
+// import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type GetConferenciaDtoRequest = {
   numpedido?: string;
@@ -45,11 +45,11 @@ export function useGetConferencia(
       const statusCode = error?.response?.status;
 
       if (statusCode === 404) {
-        ToastCloseButton({ description: "Pedido Não encontrado!" });
+        // ToastCloseButton({ description: "Pedido Não encontrado!" });
       } else {
-        ToastCloseButton({
-          description: "Erro desconhecido, contate o suporte",
-        });
+        // ToastCloseButton({
+        //   description: "Erro desconhecido, contate o suporte",
+        // });
       }
     }
   }, [query.error]);

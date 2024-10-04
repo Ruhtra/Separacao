@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useGetSeparacao } from "@/services/Querys/Separacao/GetSeparacao";
 import { useGetListItem } from "@/services/Querys/Item/GetListItem";
 import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
-import { SeparationProvider, useSeparationContext } from "./SeparationContext";
+import { SeparationProvider, useSeparationContext } from "./CheckContext";
 import { TopSection } from "./TopSection";
 import { ItemList } from "./ItemList";
 import { FooterSection } from "./FooterSection";
@@ -12,7 +12,7 @@ import { LoadingState } from "./LoadingState";
 import { ErrorState } from "./ErrorState";
 import { NoItemsState } from "./NoItemsState";
 
-export default function SeparationLayout() {
+export function CheckRoute() {
   const { orderNumber } = useParams<{ orderNumber: string }>();
   const separacaoQuery = useGetSeparacao({ numpedido: orderNumber }, true);
   const itemListQuery = useGetListItem(

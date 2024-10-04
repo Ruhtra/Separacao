@@ -13,15 +13,15 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 import { usePostConfirmItem } from "@/services/Querys/Item/PostConfirmItem";
-import { useSeparationContext } from "./SeparationContext";
+import { useSeparationContext } from "./CheckContext";
 import { StatusIcon } from "./Utils";
 
 const createItemSchema = (maxQuantity: number) =>
   z.object({
     quantity: z
       .number()
-      .nonnegative("Quantity must be non-negative")
-      .max(maxQuantity, `Quantity must not exceed ${maxQuantity}`),
+      .nonnegative("Quantidade não pode ser negativo")
+      .max(maxQuantity, `Quantidade dviergente do pedido`),
   });
 
 interface ItemCardProps {
@@ -82,9 +82,8 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
                   {item.qtd !== undefined && (
                     <p className="text-xs sm:text-sm  order-first sm:order-none sm:text-right">
                       <span className="text-green-600">
-                        {item.qtd_separada}
-                      </span>{" "}
-                      / {item.qtd}
+                        Separado: {item.qtd_separada ?? "S/N"}
+                      </span>
                     </p>
                   )}
                   <FormField

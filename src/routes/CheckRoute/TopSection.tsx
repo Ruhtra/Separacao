@@ -8,8 +8,8 @@ export function TopSection({ clientName, orderNumber }: TopSectionProps) {
     <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       <div className="container mx-auto p-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <div>
-            <h2 className="text-lg font-semibold truncate max-w-[200px] sm:max-w-none">
+          <div className="w-full">
+            <h2 className="text-lg font-semibold truncate  sm:max-w-none">
               Client: {clientName}
             </h2>
             <p className="text-sm text-muted-foreground">
