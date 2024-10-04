@@ -17,7 +17,10 @@ export type GetSeparacaoDtoResponse = {
   qtd_itens?: number;
 };
 
-export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
+export function useGetSeparacao(
+  request: GetSeparacaoDtoRequest,
+  enabled: boolean
+) {
   const query = useQuery<GetSeparacaoDtoResponse>({
     queryKey: ["separacao", request],
     queryFn: async () => {
@@ -30,7 +33,7 @@ export function useGetSeparacao(request: GetSeparacaoDtoRequest) {
       return response.data;
     },
     staleTime: 1000 * 60, // 1 minute
-    enabled: false,
+    enabled: enabled,
     retry: false,
   });
 

@@ -3,17 +3,21 @@ import { IndexRoute } from "./routes/IndexRoute";
 import { Toaster } from "./components/ui/sonner";
 import { DashboardRoute } from "./routes/DashBoardRoute";
 import { ConferirRoute } from "./routes/ConferirRoute";
-import { SepararRoute } from "./routes/SepararRoute";
 import { ShowRoute } from "./routes/ShowRoute";
+import SearchOrder from "./routes/SepararRoute/SearchOrder";
+import SeparationLayout from "./routes/SepararRoute/SeparationLayout";
 function Render() {
   return (
     <>
       <Routes>
         <Route path="/login" element={<IndexRoute />} />
-        <Route path="/" element={<DashboardRoute />} />
         <Route path="/">
+          <Route path="" element={<DashboardRoute />} />
           <Route path="conferir" element={<ConferirRoute />} />
-          <Route path="separar" element={<SepararRoute />} />
+          <Route path="separate">
+            <Route path="" element={<SearchOrder />} />
+            <Route path=":orderNumber" element={<SeparationLayout />} />
+          </Route>
           <Route path="show" element={<ShowRoute />} />
         </Route>
       </Routes>

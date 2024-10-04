@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export function DashboardRoute() {
   const routes = [
-    { name: "Separar", path: "/separar", icon: Layers },
+    { name: "Separar", path: "/separate", icon: Layers },
     { name: "Conferir", path: "/conferir", icon: CheckSquare },
     { name: "Visualizar", path: "/show", icon: Eye },
     { name: "Teste", path: "/teste", icon: Beaker },
