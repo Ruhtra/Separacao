@@ -1,22 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 import { IndexRoute } from "./routes/IndexRoute";
-import { SepararRoute } from "./routes/SepararRoute/SepararRoute";
 import { Toaster } from "./components/ui/sonner";
-import { InternetProvider } from "./Contexts/InternetContext";
-import { BuscarConferenciaRoute } from "./routes/BuscarConferencia/BuscarConferenciaRoute";
-import { ConferenciaRoute } from "./routes/Conferencia/ConferenciaRoute";
-import { StatusRoute } from "./routes/StatusRoute";
+import { DashboardRoute } from "./routes/DashBoardRoute";
+import { ConferirRoute } from "./routes/ConferirRoute";
+import { SepararRoute } from "./routes/SepararRoute";
+import { ShowRoute } from "./routes/ShowRoute";
 function Render() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<IndexRoute />} />
-        <Route path="/separar" element={<SepararRoute />} />
-        <Route path="/find">
-          <Route path="" element={<BuscarConferenciaRoute />}></Route>
-          <Route path="Conferencia" element={<ConferenciaRoute />} />
+        <Route path="/login" element={<IndexRoute />} />
+        <Route path="/" element={<DashboardRoute />} />
+        <Route path="/">
+          <Route path="conferir" element={<ConferirRoute />} />
+          <Route path="separar" element={<SepararRoute />} />
+          <Route path="show" element={<ShowRoute />} />
         </Route>
-        <Route path="/status" element={<StatusRoute />} />
       </Routes>
     </>
   );
@@ -24,11 +23,9 @@ function Render() {
 
 export function App() {
   return (
-    <InternetProvider>
-      <div className="layout h-full flex-1">
-        <Render />
-        <Toaster position="top-left" />
-      </div>
-    </InternetProvider>
+    <div className="layout h-full flex-1">
+      <Render />
+      <Toaster position="top-left" />
+    </div>
   );
 }
