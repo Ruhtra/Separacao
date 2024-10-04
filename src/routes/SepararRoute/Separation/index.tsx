@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetSeparacao } from "@/services/Querys/Separacao/GetSeparacao";
 import { useGetListItem } from "@/services/Querys/Item/GetListItem";
-import ItemList from "./ItemList";
+import { ItemList } from "./ItemList";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
