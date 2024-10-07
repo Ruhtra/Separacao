@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetSeparacao } from "@/services/Querys/Separacao/GetSeparacao";
 import { useGetListItem } from "@/services/Querys/Item/GetListItem";
 import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
@@ -58,6 +58,7 @@ function SeparationLayoutContent({
 }) {
   const { items, canConfirmAll } = useSeparationContext();
   const { idOperador } = useAuth();
+  const navigate = useNavigate();
 
   const handleConfirmAll = () => {
     setIsDialogOpen(true);
@@ -70,6 +71,7 @@ function SeparationLayoutContent({
         idOperador: idOperador, // Assuming you have the operator ID available
       });
       setIsDialogOpen(false);
+      navigate(`/show/${orderNumber}`);
     } catch (error) {
       console.error("Failed to complete order:", error);
     }
