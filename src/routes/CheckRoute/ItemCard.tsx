@@ -12,9 +12,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
-import { usePostConfirmItem } from "@/services/Querys/Item/PostConfirmItem";
 import { useSeparationContext } from "./CheckContext";
 import { StatusIcon } from "./Utils";
+import { useConfirmItemConferencia } from "@/services/Querys/Item/PostConfirmItemConferencia";
 
 const createItemSchema = (maxQuantity: number) =>
   z.object({
@@ -30,7 +30,7 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, numpedido }: ItemCardProps) {
-  const { mutateAsync, status } = usePostConfirmItem(numpedido);
+  const { mutateAsync, status } = useConfirmItemConferencia(numpedido);
   const { updateItemStatus, updateItemConfirmationStatus } =
     useSeparationContext();
 
@@ -49,6 +49,7 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
       await mutateAsync({
         qtd: values.quantity,
         idseparacao_item: item.idseparacao_item,
+        idoperador: "1", //HARDCODE
       });
       updateItemStatus(item.idseparacao_item, values.quantity);
       updateItemConfirmationStatus(item.idseparacao_item, "success");
@@ -82,7 +83,7 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
                   {item.qtd !== undefined && (
                     <p className="text-xs sm:text-sm  order-first sm:order-none sm:text-right">
                       <span className="text-green-600">
-                        Separado: {item.qtd_separada ?? "S/N"}
+                        Conferido: {item.qtd_separada ?? "S/N"}
                       </span>
                     </p>
                   )}
