@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -22,9 +22,11 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuthLogin } from "@/services/Querys/Auth/LoginAuth";
+import { useNavigate } from "react-router-dom";
+import { InputPassword } from "@/components/InputPassword";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -36,7 +38,8 @@ const formSchema = z.object({
 });
 
 export function LoginRoute() {
-  const { mutate: mutateAsync } = useAuthLogin();
+  const navigate = useNavigate();
+  const { mutateAsync, isPending } = useAuthLogin();
   const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -47,14 +50,24 @@ export function LoginRoute() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    const a = await mutateAsync({
-      email: values.email,
-      password: values.password,
-    });
-    console.log(a);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        // You might want to validate the token here
+        navigate("/");
+      }
+    };
+    checkAuth();
+  }, [navigate]);
 
-    setError("Invalid email or password. Please try again.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await mutateAsync(values);
+      navigate("/");
+    } catch (error) {
+      setError("Invalid email or password. Please try again.");
+    }
   }
 
   return (
@@ -82,30 +95,18 @@ export function LoginRoute() {
                         placeholder="Enter your email"
                         {...field}
                         autoComplete="username"
+                        disabled={isPending}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
+              <InputPassword
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                        autoComplete="current-password"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                placeholder="Enter your password"
               />
+
               {error && (
                 <Alert variant="destructive">
                   <AlertCircle className="h-4 w-4" />
@@ -113,8 +114,15 @@ export function LoginRoute() {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Button type="submit" className="w-full">
-                Sign In
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </form>
           </Form>

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { LoginRoute } from "./routes/LogInRoute";
 import { Toaster } from "./components/ui/sonner";
 import { DashboardRoute } from "./routes/DashBoardRoute";
@@ -9,12 +9,24 @@ import { LayoutCheck } from "./routes/CheckRoute/LayoutCheck";
 import { ShowLayout } from "./routes/ShowRoute/LayoutShow";
 import { SeparateRoute } from "./routes/SeparateRoute";
 import { LogoutRoute } from "./routes/LogoutRoute/Index";
+
+type ProtectedRouteProps = {};
+const ProtectedRoute = ({}: ProtectedRouteProps) => {
+  const token = localStorage.getItem("authToken");
+
+  if (!token) {
+    return <Navigate to={"/login"} replace />;
+  }
+
+  return <Outlet />;
+};
+
 function Render() {
   return (
     <>
       <Routes>
         <Route path="/login" element={<LoginRoute />} />
-        <Route path="/">
+        <Route path="/" element={<ProtectedRoute />}>
           <Route path="" element={<DashboardRoute />} />
           <Route path="separate" element={<SeparateRoute />} />
           <Route path="check" element={<LayoutCheck />}>

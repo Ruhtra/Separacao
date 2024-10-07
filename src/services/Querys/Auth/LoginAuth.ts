@@ -7,11 +7,15 @@ export type AuthLoginDtoRequest = {
   email?: string;
   password?: string;
 };
+export type AuthLoginDtoResponse = {
+  token: string;
+};
 
 export function useAuthLogin() {
   return useMutation({
     mutationFn: async (request: AuthLoginDtoRequest) => {
-      await api.post(`${PathUrlAuth}/Login`, request);
+      const response = await api.post(`${PathUrlAuth}/Login`, request);
+      localStorage.setItem("authToken", response.data);
     },
     retry: false,
     onSuccess: (_data, _variables) => {},
