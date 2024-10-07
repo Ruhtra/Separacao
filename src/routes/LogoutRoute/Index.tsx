@@ -1,12 +1,14 @@
+import { useAuth } from "@/Contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function LogoutRoute() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   useEffect(() => {
     // Remove o token de autenticação
-    localStorage.removeItem("authToken");
+    logout();
 
     // Redireciona o usuário para a página de login
     navigate("/login");

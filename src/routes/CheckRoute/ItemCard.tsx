@@ -15,6 +15,7 @@ import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 import { useSeparationContext } from "./CheckContext";
 import { StatusIcon } from "./Utils";
 import { useConfirmItemConferencia } from "@/services/Querys/Item/PostConfirmItemConferencia";
+import { useAuth } from "@/Contexts/AuthContext";
 
 const createItemSchema = (maxQuantity: number) =>
   z.object({
@@ -34,6 +35,8 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
   const { updateItemStatus, updateItemConfirmationStatus } =
     useSeparationContext();
 
+  const { idOperador } = useAuth();
+
   const form = useForm<z.infer<ReturnType<typeof createItemSchema>>>({
     resolver: zodResolver(createItemSchema(item.qtd)),
     defaultValues: {
@@ -49,7 +52,7 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
       await mutateAsync({
         qtd: values.quantity,
         idseparacao_item: item.idseparacao_item,
-        idoperador: "1", //HARDCODE
+        idoperador: idOperador,
       });
       updateItemStatus(item.idseparacao_item, values.quantity);
       updateItemConfirmationStatus(item.idseparacao_item, "success");

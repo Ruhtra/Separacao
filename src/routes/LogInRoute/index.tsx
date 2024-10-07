@@ -27,6 +27,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuthLogin } from "@/services/Querys/Auth/LoginAuth";
 import { useNavigate } from "react-router-dom";
 import { InputPassword } from "@/components/InputPassword";
+import { useAuth } from "@/Contexts/AuthContext";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -41,6 +42,7 @@ export function LoginRoute() {
   const navigate = useNavigate();
   const { mutateAsync, isPending } = useAuthLogin();
   const [error, setError] = useState<string | null>(null);
+  const { token } = useAuth();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,15 +53,10 @@ export function LoginRoute() {
   });
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        // You might want to validate the token here
-        navigate("/");
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {

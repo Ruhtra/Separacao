@@ -11,6 +11,7 @@ import { ConfirmationDialog } from "./ConfirmationDialog";
 import { LoadingState } from "./LoadingState";
 import { ErrorState } from "./ErrorState";
 import { NoItemsState } from "./NoItemsState";
+import { useAuth } from "@/Contexts/AuthContext";
 
 export function CheckRoute() {
   const { orderNumber } = useParams<{ orderNumber: string }>();
@@ -56,6 +57,7 @@ function SeparationLayoutContent({
   completeSeparacao: ReturnType<typeof useCompleteSeparacao>;
 }) {
   const { items, canConfirmAll } = useSeparationContext();
+  const { idOperador } = useAuth();
 
   const handleConfirmAll = () => {
     setIsDialogOpen(true);
@@ -65,7 +67,7 @@ function SeparationLayoutContent({
     try {
       await completeSeparacao.mutateAsync({
         numpedido: orderNumber,
-        idOperador: "1", // Assuming you have the operator ID available
+        idOperador: idOperador, // Assuming you have the operator ID available
       });
       setIsDialogOpen(false);
     } catch (error) {

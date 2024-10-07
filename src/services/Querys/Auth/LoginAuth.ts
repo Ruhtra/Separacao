@@ -1,6 +1,7 @@
 import { api } from "@/services/Api";
 import { useMutation } from "@tanstack/react-query";
 import { PathUrlAuth } from ".";
+import { useAuth } from "@/Contexts/AuthContext";
 // import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type AuthLoginDtoRequest = {
@@ -12,13 +13,17 @@ export type AuthLoginDtoResponse = {
 };
 
 export function useAuthLogin() {
+  const { login } = useAuth();
+
   return useMutation({
     mutationFn: async (request: AuthLoginDtoRequest) => {
       const response = await api.post(`${PathUrlAuth}/Login`, request);
-      localStorage.setItem("authToken", response.data);
+      return response.data;
     },
     retry: false,
-    onSuccess: (_data, _variables) => {},
+    onSuccess: (data, _variables) => {
+      login(data.token);
+    },
 
     onError: (error: any) => {
       const statusCode = error?.response?.status;

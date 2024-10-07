@@ -9,46 +9,48 @@ import { LayoutCheck } from "./routes/CheckRoute/LayoutCheck";
 import { ShowLayout } from "./routes/ShowRoute/LayoutShow";
 import { SeparateRoute } from "./routes/SeparateRoute";
 import { LogoutRoute } from "./routes/LogoutRoute/Index";
+import { AuthProvider, useAuth } from "./Contexts/AuthContext";
 
-type ProtectedRouteProps = {};
-const ProtectedRoute = ({}: ProtectedRouteProps) => {
-  const token = localStorage.getItem("authToken");
-
-  if (!token) {
-    return <Navigate to={"/login"} replace />;
-  }
-
+const ProtectedRoute = () => {
+  const { token } = useAuth();
+  if (!token) return <Navigate to="/login" replace />;
   return <Outlet />;
 };
 
 function Render() {
+  const { token } = useAuth();
+
   return (
-    <>
-      <Routes>
-        <Route path="/login" element={<LoginRoute />} />
-        <Route path="/" element={<ProtectedRoute />}>
-          <Route path="" element={<DashboardRoute />} />
-          <Route path="separate" element={<SeparateRoute />} />
-          <Route path="check" element={<LayoutCheck />}>
-            <Route index element={<SearchOrderRoute />} />
-            <Route path=":orderNumber" element={<CheckRoute />} />
-          </Route>
-          <Route path="show" element={<ShowLayout />}>
-            <Route index element={<SearchOrderRoute />} />
-            <Route path=":orderNumber" element={<ShowRoute />} />
-          </Route>
-          <Route path="logout" element={<LogoutRoute />} />
+    <Routes>
+      <Route
+        path="/login"
+        element={token ? <Navigate to="/" replace /> : <LoginRoute />}
+      />
+      <Route path="/" element={<ProtectedRoute />}>
+        <Route index element={<DashboardRoute />} />
+        <Route path="separate" element={<SeparateRoute />} />
+        <Route path="check" element={<LayoutCheck />}>
+          <Route index element={<SearchOrderRoute />} />
+          <Route path=":orderNumber" element={<CheckRoute />} />
         </Route>
-      </Routes>
-    </>
+        <Route path="show" element={<ShowLayout />}>
+          <Route index element={<SearchOrderRoute />} />
+          <Route path=":orderNumber" element={<ShowRoute />} />
+        </Route>
+        <Route path="logout" element={<LogoutRoute />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
 export function App() {
   return (
-    <div className="layout h-full flex-1">
-      <Render />
-      <Toaster position="top-left" />
-    </div>
+    <AuthProvider>
+      <div className="layout h-full flex-1">
+        <Render />
+        <Toaster position="top-left" />
+      </div>
+    </AuthProvider>
   );
 }
