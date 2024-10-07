@@ -1,13 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { PathUrlSeparacao } from ".";
 import { api } from "@/services/Api";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export type GetNextQueueDtoRequest = {
   idOperador?: string;
 };
 
 export type GetNextQueueDtoResponse = {
-  numpedido?: string;
+  numpedido?: number;
 };
 
 export function useGetNextQueue(request: GetNextQueueDtoRequest) {
@@ -24,19 +26,21 @@ export function useGetNextQueue(request: GetNextQueueDtoRequest) {
     },
     staleTime: 1000 * 60, // 1 minute
     retryDelay: 15 * 1000,
-    retry: true,
+    retry: false,
   });
 
-  // if (query.error) {
-  //   const error = query.error as any;
-  //   const statusCode = error?.response?.status;
+  useEffect(() => {
+    if (query.error) {
+      const error = query.error as any;
+      const statusCode = error?.response?.status;
 
-  //   if (statusCode === 404) {
-  //     toast.error("Nenhum pedido encontrado!");
-  //   } else {
-  //     toast.error("Erro desconhecido, contate o suporte!");
-  //   }
-  // }
+      if (statusCode === 404) {
+        toast.error("Nenhum pedido encontrado!");
+      } else {
+        toast.error("Erro desconhecido, contate o suporte!");
+      }
+    }
+  }, [query.error]);
 
   return query;
 }
