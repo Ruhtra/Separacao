@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetSeparacao } from "@/services/Querys/Separacao/GetSeparacao";
 import { useGetListItem } from "@/services/Querys/Item/GetListItem";
 import { useCompleteSeparacao } from "@/services/Querys/Separacao/CompleteSeparacao";
 import { SeparationProvider, useSeparationContext } from "./CheckContext";
@@ -12,10 +11,11 @@ import { LoadingState } from "./LoadingState";
 import { ErrorState } from "./ErrorState";
 import { NoItemsState } from "./NoItemsState";
 import { useAuth } from "@/Contexts/AuthContext";
+import { useGetConferencia } from "@/services/Querys/Conferir/GetConferencia";
 
 export function CheckRoute() {
   const { orderNumber } = useParams<{ orderNumber: string }>();
-  const separacaoQuery = useGetSeparacao({ numpedido: orderNumber }, true);
+  const conferenciaQuery = useGetConferencia({ numpedido: orderNumber }, true);
   const itemListQuery = useGetListItem(
     { numpedido: orderNumber },
     !!orderNumber
@@ -23,10 +23,10 @@ export function CheckRoute() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const completeSeparacao = useCompleteSeparacao();
 
-  if (separacaoQuery.isLoading || itemListQuery.isLoading)
+  if (conferenciaQuery.isLoading || itemListQuery.isLoading)
     return <LoadingState />;
-  if (separacaoQuery.isError || itemListQuery.isError) return <ErrorState />;
-  if (!separacaoQuery.data) return <NoItemsState orderNumber={orderNumber} />;
+  if (conferenciaQuery.isError || itemListQuery.isError) return <ErrorState />;
+  if (!conferenciaQuery.data) return <NoItemsState orderNumber={orderNumber} />;
   if (!itemListQuery.data || itemListQuery.data.length === 0)
     return <NoItemsState orderNumber={orderNumber} />;
 
@@ -34,7 +34,7 @@ export function CheckRoute() {
     <SeparationProvider initialItems={itemListQuery.data}>
       <SeparationLayoutContent
         orderNumber={orderNumber || ""}
-        clientName={separacaoQuery.data.cliente || ""}
+        clientName={conferenciaQuery.data.cliente || ""}
         isDialogOpen={isDialogOpen}
         setIsDialogOpen={setIsDialogOpen}
         completeSeparacao={completeSeparacao}

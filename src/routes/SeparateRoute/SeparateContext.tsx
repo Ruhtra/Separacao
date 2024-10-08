@@ -7,7 +7,7 @@ type ItemStatus = "idle" | "pending" | "success" | "error";
 
 type SeparationContextType = {
   items: GetListItemDtoResponse[];
-  updateItemStatus: (idseparacao_item: number, qtd_conferencia: number) => void;
+  updateItemStatus: (idseparacao_item: number, qtd_separada: number) => void;
   canConfirmAll: boolean;
   itemConfirmationStatus: Record<number, ItemStatus>;
   updateItemConfirmationStatus: (
@@ -48,14 +48,11 @@ export const SeparationProvider: React.FC<SeparationProviderProps> = ({
     )
   );
 
-  const updateItemStatus = (
-    idseparacao_item: number,
-    qtd_conferencia: number
-  ) => {
+  const updateItemStatus = (idseparacao_item: number, qtd_separada: number) => {
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.idseparacao_item === idseparacao_item
-          ? { ...item, qtd_conferencia }
+          ? { ...item, qtd_separada }
           : item
       )
     );

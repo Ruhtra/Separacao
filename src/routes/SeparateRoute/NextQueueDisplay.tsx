@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/Contexts/AuthContext";
 import { useGetNextQueue } from "@/services/Querys/Separacao/GetNextQueue";
+import { Page } from "./Page";
 
 export function NextQueueDisplay() {
   const { idOperador } = useAuth();
@@ -32,20 +33,24 @@ export function NextQueueDisplay() {
   }, [data]);
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg">
+    <>
       {validNumber ? (
-        <div className="text-2xl font-bold text-green-600">
-          Next Queue Number: {validNumber}
-        </div>
+        <Page numpedido={validNumber} />
       ) : (
         <>
-          <div className="text-xl mb-2">Fetching next queue number...</div>
-          <div className="text-gray-600">
-            Next attempt in: {countdown} seconds
+          <div className="flex  items-center w-full justify-center h-full">
+            <div className="p-4 m-4 bg-white shadow rounded-lg ">
+              <div className="text-xl mb-2">Fetching next queue number...</div>
+              <div className="text-gray-600">
+                Next attempt in: {countdown} seconds
+              </div>
+              {isLoading && (
+                <div className="mt-2 text-blue-500">Loading...</div>
+              )}
+            </div>
           </div>
-          {isLoading && <div className="mt-2 text-blue-500">Loading...</div>}
         </>
       )}
-    </div>
+    </>
   );
 }

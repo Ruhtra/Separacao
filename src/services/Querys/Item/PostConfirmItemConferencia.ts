@@ -22,6 +22,8 @@ export function useConfirmItemConferencia(numpedido: string) {
       queryClient.setQueryData<GetListItemDtoResponse[]>(
         ["itemList", numpedido],
         (oldData) => {
+          console.log(oldData);
+
           if (!oldData) return [];
 
           // Find and update the specific item
@@ -30,7 +32,6 @@ export function useConfirmItemConferencia(numpedido: string) {
               ? {
                   ...listItem,
                   qtd_conferencia: variables.qtd,
-                  // situa: "sim",
                 }
               : listItem
           );

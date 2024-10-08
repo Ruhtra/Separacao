@@ -10,6 +10,7 @@ import { ShowLayout } from "./routes/ShowRoute/LayoutShow";
 import { SeparateRoute } from "./routes/SeparateRoute";
 import { LogoutRoute } from "./routes/LogoutRoute/Index";
 import { AuthProvider, useAuth } from "./Contexts/AuthContext";
+import { LayoutSeparate } from "./routes/SeparateRoute/LayoutSeparate";
 
 const ProtectedRoute = () => {
   const { token } = useAuth();
@@ -28,7 +29,9 @@ function Render() {
       />
       <Route path="/" element={<ProtectedRoute />}>
         <Route index element={<DashboardRoute />} />
-        <Route path="separate" element={<SeparateRoute />} />
+        <Route path="separate" element={<LayoutSeparate />}>
+          <Route index element={<SeparateRoute />} />
+        </Route>
         <Route path="check" element={<LayoutCheck />}>
           <Route index element={<SearchOrderRoute />} />
           <Route path=":orderNumber" element={<CheckRoute />} />

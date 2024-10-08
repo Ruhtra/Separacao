@@ -1,4 +1,4 @@
-import { useSeparationContext } from "./CheckContext";
+import { useSeparationContext } from "./SeparateContext";
 import {
   Dialog,
   DialogContent,
@@ -47,7 +47,9 @@ export function ConfirmationDialog({
                 <span className="flex-grow truncate">
                   {item.descricao_item}
                 </span>
-                <span>{item.qtd_conferencia ?? "S/N"}</span>
+                <span>
+                  {item.qtd_separada ?? "S/N"} / {item.qtd}
+                </span>
               </div>
             ))}
           </div>

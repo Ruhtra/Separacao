@@ -12,17 +12,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
-import { useSeparationContext } from "./CheckContext";
+import { useSeparationContext } from "./SeparateContext";
 import { StatusIcon } from "./Utils";
-import { useConfirmItemConferencia } from "@/services/Querys/Item/PostConfirmItemConferencia";
-import { useAuth } from "@/Contexts/AuthContext";
+import { usePostConfirmItem } from "@/services/Querys/Item/PostConfirmItem";
 
 const createItemSchema = (maxQuantity: number) =>
   z.object({
     quantity: z
       .number()
       .nonnegative("Quantidade não pode ser negativo")
-      .max(maxQuantity, `Quantidade divergente do pedido`),
+      .max(maxQuantity, `Quantidade não pode ser superior ao do pedido`),
   });
 
 interface ItemCardProps {
@@ -31,16 +30,14 @@ interface ItemCardProps {
 }
 
 export function ItemCard({ item, numpedido }: ItemCardProps) {
-  const { mutateAsync, status } = useConfirmItemConferencia(numpedido);
+  const { mutateAsync, status } = usePostConfirmItem(numpedido);
   const { updateItemStatus, updateItemConfirmationStatus } =
     useSeparationContext();
-
-  const { idOperador } = useAuth();
 
   const form = useForm<z.infer<ReturnType<typeof createItemSchema>>>({
     resolver: zodResolver(createItemSchema(item.qtd)),
     defaultValues: {
-      quantity: item.qtd_conferencia ?? 0,
+      quantity: item.qtd_separada,
     },
   });
 
@@ -52,7 +49,6 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
       await mutateAsync({
         qtd: values.quantity,
         idseparacao_item: item.idseparacao_item,
-        idoperador: idOperador,
       });
       updateItemStatus(item.idseparacao_item, values.quantity);
       updateItemConfirmationStatus(item.idseparacao_item, "success");
@@ -84,10 +80,11 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
               >
                 <div className="flex flex-col space-y-2">
                   {item.qtd !== undefined && (
-                    <p className="text-xs sm:text-sm order-first sm:order-none sm:text-right">
+                    <p className="text-xs sm:text-sm  order-first sm:order-none sm:text-right">
                       <span className="text-green-600">
-                        Conferido: {item.qtd_conferencia ?? "S/N"}
+                        {item.qtd_separada ?? ""}
                       </span>
+                      / {item.qtd}
                     </p>
                   )}
                   <FormField
@@ -102,6 +99,7 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
                               type="number"
                               placeholder="Qty"
                               className="w-full"
+                              defaultValue={0}
                               onChange={(e) => {
                                 let inputValue = e.target.value;
                                 if (field.value === 0 || field.value == null) {
