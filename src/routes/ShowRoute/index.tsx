@@ -14,98 +14,80 @@ import {
   useGetListItem,
 } from "@/services/Querys/Item/GetListItem";
 
-function getStatusSituacao(
+const getStatusSituacao = (
   qtd: number,
   qtd_separada: number | undefined,
   qtd_conferencia: number | undefined
-) {
-  let mc = "x";
-  let ms = "x";
-
-  if (qtd !== qtd_conferencia) mc = "c";
-  if (qtd !== qtd_separada) ms = "s";
-
+): string => {
   if (qtd_conferencia === null && qtd_separada === null) return "nn";
-
+  const mc = qtd !== qtd_conferencia ? "c" : "x";
+  const ms = qtd !== qtd_separada ? "s" : "x";
   return mc + ms;
-}
+};
 
-function getSituacao(item: GetListItemDtoResponse) {
+const getStatusInfo = (
+  status: string
+): { message: string; color: string; icon: JSX.Element } => {
+  switch (status) {
+    case "xx":
+      return {
+        message: "Tudo Okay",
+        color: "green",
+        icon: <CheckCircle className="h-5 w-5" />,
+      };
+    case "cx":
+      return {
+        message: "Conferência divergente",
+        color: "red",
+        icon: <AlertCircle className="h-5 w-5" />,
+      };
+    case "xs":
+      return {
+        message: "Separação divergente",
+        color: "yellow",
+        icon: <AlertTriangle className="h-5 w-5" />,
+      };
+    case "cs":
+      return {
+        message: "Conferência e Separação divergentes",
+        color: "red",
+        icon: <AlertCircle className="h-5 w-5" />,
+      };
+    case "nn":
+      return {
+        message: "Produto vazio",
+        color: "blue",
+        icon: <HelpCircle className="h-5 w-5" />,
+      };
+    default:
+      return {
+        message: "Erro ao identificar o tipo, contate o suporte",
+        color: "gray",
+        icon: <AlertCircle className="h-5 w-5" />,
+      };
+  }
+};
+
+export function ItemCard({ item }: { item: GetListItemDtoResponse }) {
   const status = getStatusSituacao(
     item.qtd,
     item.qtd_separada,
     item.qtd_conferencia
   );
-
-  switch (status) {
-    case "xx":
-      return "Tudo Okay";
-    case "cx":
-      return "Conferência divergente";
-    case "xs":
-      return "Separação divergente";
-    case "cs":
-      return "Conferência e Separação divergentes";
-    case "nn":
-      return "Produto vazio";
-    default:
-      return "Erro ao identificar o tipo, contate o suporte";
-  }
-}
-
-function getColor(item: GetListItemDtoResponse) {
-  const status = getStatusSituacao(
-    item.qtd,
-    item.qtd_separada,
-    item.qtd_conferencia
-  );
-  switch (status) {
-    case "xx":
-      return "ok";
-    case "cx":
-      return "error";
-    case "xs":
-      return "warning";
-    case "cs":
-      return "error";
-    case "nn":
-      return "blue";
-    default:
-      return "";
-  }
-}
-
-function StatusIcon({ status }: { status: string }) {
-  switch (status) {
-    case "ok":
-      return <CheckCircle className="h-5 w-5 text-green-500" />;
-    case "error":
-      return <AlertCircle className="h-5 w-5 text-red-500" />;
-    case "warning":
-      return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
-    case "blue":
-      return <HelpCircle className="h-5 w-5 text-blue-500" />;
-    default:
-      return null;
-  }
-}
-
-function ItemCard({ item }: { item: GetListItemDtoResponse }) {
-  const status = getColor(item);
-  const situacao = getSituacao(item);
+  const { message, color, icon } = getStatusInfo(status);
 
   return (
-    <Card className="relative">
-      <CardContent className="p-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-          <div className="w-full sm:w-auto">
+    <Card className="overflow-hidden">
+      <CardContent className="p-0">
+        <div className="flex flex-col sm:flex-row">
+          <div className="flex-grow p-4">
             <h3 className="text-sm font-semibold mb-1 truncate">
               {item.descricao_item}
             </h3>
-            <p className="text-xs text-gray-500 mb-2">
+            <p className="text-xs text-muted-foreground mb-2">
               Código: {item.codproduto}
             </p>
-            <div className="flex justify-between text-xs">
+            <div className="grid grid-cols-3 gap-2 text-xs">
               <div>
                 <span className="font-medium">Qtd:</span> {item.qtd}
               </div>
@@ -119,20 +101,24 @@ function ItemCard({ item }: { item: GetListItemDtoResponse }) {
               </div>
             </div>
           </div>
-          <div className="flex items-center mt-2 sm:mt-0">
-            <Badge
-              variant={
-                status === "ok"
-                  ? "default"
-                  : status === "error"
-                  ? "destructive"
-                  : "outline"
-              }
-              className="ml-2 text-xs"
-            >
-              {situacao}
-            </Badge>
-            <StatusIcon status={status} />
+          <div
+            className={`flex items-center justify-between p-2 sm:p-4 bg-${color}-100`}
+          >
+            <div className="flex items-center">
+              <div className={`text-${color}-500 mr-2`}>{icon}</div>
+              <Badge
+                variant={
+                  color === "green"
+                    ? "default"
+                    : color === "red"
+                    ? "destructive"
+                    : "outline"
+                }
+                className="text-xs whitespace-nowrap"
+              >
+                {message}
+              </Badge>
+            </div>
           </div>
         </div>
       </CardContent>

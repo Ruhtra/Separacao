@@ -40,7 +40,7 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
   const form = useForm<z.infer<ReturnType<typeof createItemSchema>>>({
     resolver: zodResolver(createItemSchema(item.qtd)),
     defaultValues: {
-      quantity: item.qtd_conferencia ?? 0,
+      quantity: item.qtd_conferencia,
     },
   });
 
