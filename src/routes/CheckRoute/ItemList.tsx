@@ -70,17 +70,17 @@ export function ItemList({ numpedido }: ItemListProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-gray-50">
-      <div className="container p-4 bg-white shadow-md mx-auto">
+    <div className="flex flex-col h-full">
+      <div className="bg-white shadow-md p-4">
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="relative w-full sm:w-96">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative flex-grow w-full sm:w-auto min-w-0 max-w-[300px]">
               <Input
                 type="text"
                 placeholder="Filtrar por código de barras"
                 value={barcodeFilter}
                 onChange={(e) => setBarcodeFilter(e.target.value)}
-                className="pr-10"
+                className="pr-10 w-full"
               />
               <Barcode
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -90,7 +90,7 @@ export function ItemList({ numpedido }: ItemListProps) {
             <Button
               onClick={clearFilter}
               variant="outline"
-              className="w-full sm:w-auto touch-manipulation"
+              className="flex-shrink-0 touch-manipulation"
             >
               <XCircle className="mr-2 h-4 w-4" />
               Limpar Filtro
@@ -113,8 +113,8 @@ export function ItemList({ numpedido }: ItemListProps) {
           </div>
         </div>
       </div>
-      <ScrollArea className="flex-grow px-4 py-6">
-        <div className="container mx-auto space-y-4">
+      <ScrollArea className="flex-1">
+        <div className="space-y-4 p-4">
           {filteredItems.map((item) => (
             <ItemCard
               key={item.idseparacao_item}

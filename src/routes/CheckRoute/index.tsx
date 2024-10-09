@@ -43,7 +43,7 @@ export function CheckRoute() {
   );
 }
 
-function SeparationLayoutContent({
+export function SeparationLayoutContent({
   orderNumber,
   clientName,
   isDialogOpen,
@@ -68,7 +68,7 @@ function SeparationLayoutContent({
     try {
       await completeSeparacao.mutateAsync({
         numpedido: orderNumber,
-        idOperador: idOperador, // Assuming you have the operator ID available
+        idOperador: idOperador,
       });
       setIsDialogOpen(false);
       navigate(`/show/${orderNumber}`);
@@ -78,16 +78,16 @@ function SeparationLayoutContent({
   };
 
   return (
-    <>
-      <div className="flex flex-col h-full">
-        <TopSection clientName={clientName} orderNumber={orderNumber} />
+    <div className="flex flex-col h-full">
+      <TopSection clientName={clientName} orderNumber={orderNumber} />
+      <div className="flex-1 overflow-hidden">
         <ItemList numpedido={orderNumber} />
-        <FooterSection
-          itemCount={items.length}
-          canConfirmAll={canConfirmAll}
-          onConfirmAll={handleConfirmAll}
-        />
       </div>
+      <FooterSection
+        itemCount={items.length}
+        canConfirmAll={canConfirmAll}
+        onConfirmAll={handleConfirmAll}
+      />
       <ConfirmationDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
@@ -95,6 +95,6 @@ function SeparationLayoutContent({
         canConfirmAll={canConfirmAll}
         isPending={completeSeparacao.isPending}
       />
-    </>
+    </div>
   );
 }
