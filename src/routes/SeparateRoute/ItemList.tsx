@@ -57,9 +57,7 @@ export function ItemList({ numpedido }: ItemListProps) {
   }, [handleBarcodeInput]);
 
   const filteredItems = items.filter((item) => {
-    const conferidosFilter = showConferidos
-      ? item.qtd_conferencia == null
-      : true;
+    const conferidosFilter = showConferidos ? item.qtd_separada == 0 : true;
     const barcodeMatch = barcodeFilter
       ? item.codigo_barra === barcodeFilter
       : true;
@@ -105,7 +103,7 @@ export function ItemList({ numpedido }: ItemListProps) {
                 onCheckedChange={setShowConferidos}
               />
               <Label htmlFor="show-conferidos">
-                Mostrar apenas não conferidos
+                Mostrar apenas por zerados
               </Label>
             </div>
             <div className="text-sm text-gray-500">
