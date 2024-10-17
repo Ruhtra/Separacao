@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { GetListItemDtoResponse } from "@/services/Querys/Item/GetListItem";
 import { useSeparationContext } from "./CheckContext";
-import { StatusIcon } from "./Utils";
 import { useConfirmItemConferencia } from "@/services/Querys/Item/PostConfirmItemConferencia";
 import { useAuth } from "@/Contexts/AuthContext";
 
@@ -68,7 +67,6 @@ export function ItemCard({ item, numpedido }: ItemCardProps) {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div className="w-full sm:w-auto">
               <h3 className="flex items-center gap-1 font-semibold text-sm sm:text-base mb-2">
-                <StatusIcon status={status} />
                 <p className="truncate">{item.descricao_item}</p>
               </h3>
               <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">

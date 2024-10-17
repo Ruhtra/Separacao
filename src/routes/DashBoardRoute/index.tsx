@@ -18,7 +18,7 @@ export function DashboardRoute() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-[100svh] bg-gray-100 p-4 sm:p-6 lg:p-8">
       <Card className="w-full max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center">

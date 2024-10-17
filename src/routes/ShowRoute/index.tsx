@@ -80,14 +80,14 @@ export function ItemCard({ item }: { item: GetListItemDtoResponse }) {
     <Card className="overflow-hidden">
       <CardContent className="p-0">
         <div className="flex flex-col sm:flex-row">
-          <div className="flex-grow p-4">
+          <div className="flex-grow p-2  bg-[rgba(0,0,0,.05)]">
             <h3 className="text-sm font-semibold mb-1 truncate">
               {item.descricao_item}
             </h3>
             <p className="text-xs text-muted-foreground mb-2">
               Código: {item.codproduto}
             </p>
-            <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="sm:flex grid grid-cols-3 text-center  gap-4 text-xs ">
               <div>
                 <span className="font-medium">Qtd:</span> {item.qtd}
               </div>
