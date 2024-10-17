@@ -26,15 +26,11 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuthLogin } from "@/services/Querys/Auth/LoginAuth";
 import { useNavigate } from "react-router-dom";
-import { InputPassword } from "@/components/InputPassword";
 import { useAuth } from "@/Contexts/AuthContext";
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters long.",
+  cpf: z.string({
+    message: "Por favor informe um cpf Válido.",
   }),
 });
 
@@ -47,8 +43,7 @@ export function LoginRoute() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      cpf: "",
     },
   });
 
@@ -63,7 +58,7 @@ export function LoginRoute() {
       await mutateAsync(values);
       navigate("/");
     } catch (error) {
-      setError("Invalid email or password. Please try again.");
+      setError("Invalid cpf. Please try again.");
     }
   }
 
@@ -83,25 +78,21 @@ export function LoginRoute() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 control={form.control}
-                name="email"
+                name="cpf"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Enter your email"
+                        placeholder="Enter your cpf"
                         {...field}
-                        autoComplete="username"
+                        autoComplete="cpf"
                         disabled={isPending}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-              <InputPassword
-                name="password"
-                placeholder="Enter your password"
               />
 
               {error && (

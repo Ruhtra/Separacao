@@ -5,8 +5,7 @@ import { useAuth } from "@/Contexts/AuthContext";
 // import { ToastCloseButton } from "@/MyUi/Toast/ToastCloseButton";
 
 export type AuthLoginDtoRequest = {
-  email?: string;
-  password?: string;
+  cpf?: string;
 };
 export type AuthLoginDtoResponse = {
   token: string;
