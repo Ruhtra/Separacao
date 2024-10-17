@@ -11,6 +11,7 @@ interface AuthContextType {
   idOperador: string;
   login: (token: string) => void;
   logout: () => void;
+  loading: boolean; // Add this line
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -30,15 +31,22 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [idOperador, setIdOperador] = useState<string>("");
+  const [loading, setLoading] = useState(true); // Add this line
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("authToken");
-    if (storedToken) {
-      login(storedToken);
-    }
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem("authToken");
+      if (storedToken) {
+        await login(storedToken);
+      }
+      setLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
-  const login = (newToken: string) => {
+  const login = async (newToken: string) => {
+    setLoading(true);
     try {
       const decoded = jwtDecode<DecodedToken>(newToken);
       if (!decoded.idOperador) {
@@ -50,6 +58,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.error("Error decoding token:", error);
       logout();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,6 +74,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     idOperador,
     login,
     logout,
+    loading, // Add this line
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

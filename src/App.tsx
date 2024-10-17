@@ -11,15 +11,21 @@ import { SeparateRoute } from "./routes/SeparateRoute";
 import { LogoutRoute } from "./routes/LogoutRoute/Index";
 import { AuthProvider, useAuth } from "./Contexts/AuthContext";
 import { LayoutSeparate } from "./routes/SeparateRoute/LayoutSeparate";
+import { LoadingApp } from "./components/Loading/LoadingApp";
 
 const ProtectedRoute = () => {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
+
+  if (loading) return <LoadingApp />;
+
   if (!token) return <Navigate to="/login" replace />;
   return <Outlet />;
 };
 
 function Render() {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
+
+  if (loading) return <LoadingApp />;
 
   return (
     <Routes>
